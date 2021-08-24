@@ -1,6 +1,6 @@
 #!/bin/bash
-source utils/helper.sh
-source utils/ccloud_library.sh
+source ./scripts/helper.sh
+source ./scripts/ccloud_library.sh
 
 ## Validations to run this script
 ccloud::validate_version_ccloud_cli $CCLOUD_MIN_VERSION || exit 1
