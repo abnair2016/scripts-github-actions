@@ -24,7 +24,7 @@ jobs:
           curl -L --http1.1 https://cnfl.io/ccloud-cli | sh -s -- -b ./ccloud
           export PATH=./ccloud:$PATH;
           export CCLOUD_EMAIL="abnair2016@gmail.com"
-          export CCLOUD_PASSWORD="7PgUJFYq$aR$4mW"
+          export CCLOUD_PASSWORD="7PgUJFYq\$aR\$4mW"
           echo "$CCLOUD_EMAIL::$CCLOUD_PASSWORD"
           ccloud login
           ENVIRONMENT_NAME=dev ROLE=EnvironmentAdmin EMAIL=abheeetest@gmail.com bash ./scripts/create-user-role.sh
