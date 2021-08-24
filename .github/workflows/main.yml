@@ -1,0 +1,23 @@
+name: Run create user role script
+on:
+  push:
+    branches:
+      - master
+      - main
+    paths-ignore:
+      - '**.md'
+      - '.github/*'
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run script file
+        run: |
+          chmod +x ./scripts/create-user-role.sh
+          bash ENVIRONMENT_NAME=dev ROLE=EnvironmentAdmin EMAIL=abheeetest@gmail.com ./scripts/create-user-role.sh
