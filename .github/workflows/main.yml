@@ -43,6 +43,8 @@ jobs:
           export ROLE=${{ github.event.inputs.role }}
           echo "Role: $ROLE"
 
+          echo "${{ github.event.inputs.email }}"
+
           export EMAIL="${{ github.event.inputs.email }}"
           echo "Email: $EMAIL"
 
