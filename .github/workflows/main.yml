@@ -25,7 +25,5 @@ jobs:
           sudo apt-get install -y jq
           curl -L --http1.1 https://cnfl.io/ccloud-cli | sh -s -- -b ./ccloud
           export PATH=./ccloud:$PATH;
-          export CCLOUD_EMAIL=abnair2016@gmail.com
-          export CCLOUD_PASSWORD=7PgUJFYq$aR$4mW
-          ccloud login --save
+          CCLOUD_EMAIL=abnair2016@gmail.com CCLOUD_PASSWORD=7PgUJFYq$aR$4mW ccloud login --save
           ENVIRONMENT_NAME=dev ROLE=EnvironmentAdmin EMAIL=abheeetest@gmail.com bash ./scripts/create-user-role.sh
