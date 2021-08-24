@@ -20,4 +20,4 @@ jobs:
       - name: Run script file
         run: |
           chmod +x ./scripts/create-user-role.sh
-          bash ENVIRONMENT_NAME=dev ROLE=EnvironmentAdmin EMAIL=abheeetest@gmail.com ./scripts/create-user-role.sh
+          ENVIRONMENT_NAME=dev ROLE=EnvironmentAdmin EMAIL=abheeetest@gmail.com bash ./scripts/create-user-role.sh
