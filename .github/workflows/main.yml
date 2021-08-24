@@ -25,8 +25,5 @@ jobs:
           sudo apt-get install -y jq
           curl -L --http1.1 https://cnfl.io/ccloud-cli | sh -s -- -b ./ccloud
           export PATH=./ccloud:$PATH;
-          echo "machine confluent-cli:ccloud-username-password:login-abnair2016@gmail.com-https://confluent.cloud
-                        login abnair2016@gmail.com
-                        password 7PgUJFYq$aR$4mW">~/.netrc
           ccloud login --no-browser --save
           ENVIRONMENT_NAME=dev ROLE=EnvironmentAdmin EMAIL=abheeetest@gmail.com bash ./scripts/create-user-role.sh
