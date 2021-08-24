@@ -25,6 +25,5 @@ jobs:
           export PATH=./ccloud:$PATH;
           export CCLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
           export CCLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
-          echo "$CCLOUD_EMAIL::$CCLOUD_PASSWORD"
           ccloud login
-          ENVIRONMENT_NAME=dev ROLE=EnvironmentAdmin EMAIL=abheeetest@gmail.com bash ./scripts/create-user-role.sh
+          ENVIRONMENT_NAME=test ROLE=EnvironmentAdmin EMAIL=abheeetest@gmail.com bash ./scripts/create-user-role.sh
