@@ -25,4 +25,5 @@ jobs:
           sudo apt-get install -y jq
           curl -L --http1.1 https://cnfl.io/ccloud-cli | sh -s -- -b ./ccloud
           export PATH=./ccloud:$PATH;
+          ccloud login --no-browser --prompt --save
           ENVIRONMENT_NAME=dev ROLE=EnvironmentAdmin EMAIL=abheeetest@gmail.com bash ./scripts/create-user-role.sh
