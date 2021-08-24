@@ -15,6 +15,9 @@ echo "$EMAIL_ADDRESS"
 while [ "$EMAIL_ADDRESS" != "$email_addr" ] ;do
   # extract the substring from start of string up to delimiter.
   email_addr=${EMAIL_ADDRESS%%;*}
+  # delete this first "element" AND next separator, from $IN.
+  EMAIL_ADDRESS="${EMAIL_ADDRESS#$email_addr;}"
+
   echo "Progressing script for email: $email_addr"
   EMAIL_EXISTS=$(ccloud admin user list -o json | jq -c -r '.[] | select(.email == "'"$email_addr"'")')
   if [ -z "$EMAIL_EXISTS" ]; then
@@ -46,7 +49,4 @@ while [ "$EMAIL_ADDRESS" != "$email_addr" ] ;do
   else
     echo "$ROLE is not a valid role. Please retry with one of the valid roles: [OrganizationAdmin or MetricsViewer or EnvironmentAdmin or CloudClusterAdmin]"
   fi
-
-  # delete this first "element" AND next separator, from $IN.
-  EMAIL_ADDRESS="${EMAIL_ADDRESS#$$email_addr;}"
 done
