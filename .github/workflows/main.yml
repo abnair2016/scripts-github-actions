@@ -7,10 +7,6 @@ on:
     paths-ignore:
       - '**.md'
       - '.github/*'
-  pull_request:
-    branches:
-      - master
-      - main
   workflow_dispatch:
     inputs:
       environmentName:
