@@ -199,6 +199,29 @@ function ccloud::validate_required_params_for_user() {
   return 0
 }
 
+function ccloud::validate_required_params_for_user_no_email() {
+  ENVIRONMENT=$1
+  ROLE=$2
+
+  if [[ -z "$ENVIRONMENT" ]]; then
+    echo
+    echo "ERROR: Environment name not provided and is a required input parameter."
+    echo
+    echo "Usage: 'ENVIRONMENT_NAME=<environment name> ROLE=<role name> EMAIL=<email address> ./create-user-role.sh'."
+    exit 1
+  fi
+
+  if [[ -z "$ROLE" ]]; then
+    echo
+    echo "ERROR: Role not provided and is a required input parameter."
+    echo
+    echo "Usage: 'ENVIRONMENT_NAME=<environment name> ROLE=<role name> EMAIL=<email address> ./create-user-role.sh'."
+    exit 1
+  fi
+
+  return 0
+}
+
 function ccloud::validate_required_params_for_sa() {
   CLUSTER_NAME=$1
   CLUSTER_CLOUD=$2

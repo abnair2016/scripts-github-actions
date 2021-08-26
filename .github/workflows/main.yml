@@ -1,5 +1,16 @@
 name: Run create user role script on manually triggered workflow
 on:
+  push:
+    branches:
+      - master
+      - main
+    paths-ignore:
+      - '**.md'
+      - '.github/*'
+  pull_request:
+    branches:
+      - master
+      - main
   workflow_dispatch:
     inputs:
       environmentName:
@@ -13,7 +24,6 @@ on:
       email:
         description: 'Email'
         required: true
-        default: 'abheeetest@gmail.com'
       clusterName:
         description: 'Cluster Name'
         required: false
