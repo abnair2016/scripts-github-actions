@@ -24,6 +24,7 @@ on:
       email:
         description: 'Email'
         required: true
+        default: 'abheeetest@gmail.com'
       clusterName:
         description: 'Cluster Name'
         required: false
