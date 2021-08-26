@@ -1,16 +1,16 @@
 name: Run create user role script on manually triggered workflow
 on:
-  push:
-    branches:
-      - master
-      - main
-    paths-ignore:
-      - '**.md'
-      - '.github/*'
-  pull_request:
-    branches:
-      - master
-      - main
+#  push:
+#    branches:
+#      - master
+#      - main
+#    paths-ignore:
+#      - '**.md'
+#      - '.github/*'
+#  pull_request:
+#    branches:
+#      - master
+#      - main
   workflow_dispatch:
     inputs:
       environmentName:
