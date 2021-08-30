@@ -52,23 +52,28 @@ jobs:
           export CLUSTER_CLOUD=${{ github.event.inputs.clusterCloud }}
           export CLUSTER_REGION=${{ github.event.inputs.clusterRegion }}
 
-          if[[ -z "$ENVIRONMENT_NAME" ]]; then
+          if [ -z "$ENVIRONMENT_NAME" ]
+          then
             export ENVIRONMENT_NAME="dev"
           fi
 
-          if[[ -z "$ROLE" ]]; then
+          if [ -z "$ROLE" ]
+          then
             export ROLE="CloudClusterAdmin"
           fi
 
-          if[[ -z "$CLUSTER_NAME" ]]; then
+          if [ -z "$CLUSTER_NAME" ]
+          then
             export CLUSTER_NAME="cluster_0"
           fi
 
-          if[[ -z "$CLUSTER_CLOUD" ]]; then
+          if [ -z "$CLUSTER_CLOUD" ]
+          then
             export CLUSTER_CLOUD="azure"
           fi
 
-          if[[ -z "$CLUSTER_REGION" ]]; then
+          if [ -z "$CLUSTER_REGION" ]
+          then
             export CLUSTER_REGION="eastus"
           fi
 
