@@ -37,9 +37,13 @@ on:
 jobs:
   dev:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: scripts
     steps:
       - uses: actions/checkout@v2
-      - name: Run script file on dev
+      - name: Run script file
         run: |
           export CCLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
           export CCLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
@@ -83,66 +87,66 @@ jobs:
           echo "Cluster Name: $CLUSTER_NAME"
           echo "Cluster Cloud Provider: $CLUSTER_CLOUD"
           echo "Cluster Region: $CLUSTER_REGION"
-          chmod +x ./scripts/create-user-role.sh
+          chmod +x ./create-user-role.sh
           mkdir ccloud
           curl -L --http1.1 https://cnfl.io/ccloud-cli | sh -s -- -b ./ccloud
           export PATH=./ccloud:$PATH;
 
           ccloud login
-          bash ./scripts/create-user-role.sh
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run script file on test
-        run: |
-          export CCLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
-          export CCLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
-
-          export EMAIL="${{ github.event.inputs.email }}"
-          echo "$EMAIL"
-          export ENVIRONMENT_NAME=${{ github.event.inputs.environmentName }}
-          export ROLE=${{ github.event.inputs.role }}
-          export CLUSTER_NAME=${{ github.event.inputs.clusterName }}
-          export CLUSTER_CLOUD=${{ github.event.inputs.clusterCloud }}
-          export CLUSTER_REGION=${{ github.event.inputs.clusterRegion }}
-
-          if [ -z "$ENVIRONMENT_NAME" ]
-          then
-            export ENVIRONMENT_NAME="test"
-          fi
-
-          if [ -z "$ROLE" ]
-          then
-            export ROLE="CloudClusterAdmin"
-          fi
-
-          if [ -z "$CLUSTER_NAME" ]
-          then
-            export CLUSTER_NAME="cluster_1"
-          fi
-
-          if [ -z "$CLUSTER_CLOUD" ]
-          then
-            export CLUSTER_CLOUD="azure"
-          fi
-
-          if [ -z "$CLUSTER_REGION" ]
-          then
-            export CLUSTER_REGION="eastus"
-          fi
-
-          echo "Email: $EMAIL"
-          echo "Environment Name: $ENVIRONMENT_NAME"
-          echo "Role: $ROLE"
-          echo "Cluster Name: $CLUSTER_NAME"
-          echo "Cluster Cloud Provider: $CLUSTER_CLOUD"
-          echo "Cluster Region: $CLUSTER_REGION"
-          chmod +x ./scripts/create-user-role.sh
-          mkdir ccloud
-          curl -L --http1.1 https://cnfl.io/ccloud-cli | sh -s -- -b ./ccloud
-          export PATH=./ccloud:$PATH;
-
-          ccloud login
-          bash ./scripts/create-user-role.sh
+          bash ./create-user-role.sh
+#
+#  test:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Run script file on test
+#        run: |
+#          export CCLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
+#          export CCLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
+#
+#          export EMAIL="${{ github.event.inputs.email }}"
+#          echo "$EMAIL"
+#          export ENVIRONMENT_NAME=${{ github.event.inputs.environmentName }}
+#          export ROLE=${{ github.event.inputs.role }}
+#          export CLUSTER_NAME=${{ github.event.inputs.clusterName }}
+#          export CLUSTER_CLOUD=${{ github.event.inputs.clusterCloud }}
+#          export CLUSTER_REGION=${{ github.event.inputs.clusterRegion }}
+#
+#          if [ -z "$ENVIRONMENT_NAME" ]
+#          then
+#            export ENVIRONMENT_NAME="test"
+#          fi
+#
+#          if [ -z "$ROLE" ]
+#          then
+#            export ROLE="CloudClusterAdmin"
+#          fi
+#
+#          if [ -z "$CLUSTER_NAME" ]
+#          then
+#            export CLUSTER_NAME="cluster_1"
+#          fi
+#
+#          if [ -z "$CLUSTER_CLOUD" ]
+#          then
+#            export CLUSTER_CLOUD="azure"
+#          fi
+#
+#          if [ -z "$CLUSTER_REGION" ]
+#          then
+#            export CLUSTER_REGION="eastus"
+#          fi
+#
+#          echo "Email: $EMAIL"
+#          echo "Environment Name: $ENVIRONMENT_NAME"
+#          echo "Role: $ROLE"
+#          echo "Cluster Name: $CLUSTER_NAME"
+#          echo "Cluster Cloud Provider: $CLUSTER_CLOUD"
+#          echo "Cluster Region: $CLUSTER_REGION"
+#          chmod +x ./scripts/create-user-role.sh
+#          mkdir ccloud
+#          curl -L --http1.1 https://cnfl.io/ccloud-cli | sh -s -- -b ./ccloud
+#          export PATH=./ccloud:$PATH;
+#
+#          ccloud login
+#          bash ./scripts/create-user-role.sh
