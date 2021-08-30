@@ -44,26 +44,40 @@ jobs:
           export CCLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
           export CCLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
 
-          export ENVIRONMENT_NAME=${{ github.event.inputs.environmentName }}
-          echo "Environment Name: $ENVIRONMENT_NAME"
-
-          export ROLE=${{ github.event.inputs.role }}
-          echo "Role: $ROLE"
-
-          echo "${{ github.event.inputs.email }}"
-
           export EMAIL="${{ github.event.inputs.email }}"
-          echo "Email: $EMAIL"
-
+          echo "$EMAIL"
+          export ENVIRONMENT_NAME=${{ github.event.inputs.environmentName }}
+          export ROLE=${{ github.event.inputs.role }}
           export CLUSTER_NAME=${{ github.event.inputs.clusterName }}
-          echo "Cluster Name: $CLUSTER_NAME"
-
           export CLUSTER_CLOUD=${{ github.event.inputs.clusterCloud }}
-          echo "Cluster Cloud Provider: $CLUSTER_CLOUD"
-
           export CLUSTER_REGION=${{ github.event.inputs.clusterRegion }}
-          echo "Cluster Region: $CLUSTER_REGION"
 
+          if[[ -z "$ENVIRONMENT_NAME" ]]; then
+            export ENVIRONMENT_NAME="dev"
+          fi
+
+          if[[ -z "$ROLE" ]]; then
+            export ROLE="CloudClusterAdmin"
+          fi
+
+          if[[ -z "$CLUSTER_NAME" ]]; then
+            export CLUSTER_NAME="cluster_0"
+          fi
+
+          if[[ -z "$CLUSTER_CLOUD" ]]; then
+            export CLUSTER_CLOUD="azure"
+          fi
+
+          if[[ -z "$CLUSTER_REGION" ]]; then
+            export CLUSTER_REGION="eastus"
+          fi
+
+          echo "Email: $EMAIL"
+          echo "Environment Name: $ENVIRONMENT_NAME"
+          echo "Role: $ROLE"
+          echo "Cluster Name: $CLUSTER_NAME"
+          echo "Cluster Cloud Provider: $CLUSTER_CLOUD"
+          echo "Cluster Region: $CLUSTER_REGION"
           chmod +x ./scripts/create-user-role.sh
           mkdir ccloud
           curl -L --http1.1 https://cnfl.io/ccloud-cli | sh -s -- -b ./ccloud
