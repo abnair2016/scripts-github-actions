@@ -29,6 +29,7 @@ jobs:
       matrix:
         env: [ "dev", "test" ]
       fail-fast: true
+      max-parallel: 1
     steps:
       - uses: actions/checkout@v2
       - name: Run script file
