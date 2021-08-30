@@ -44,7 +44,6 @@ jobs:
     strategy:
       matrix:
         env: [ "dev", "test" ]
-        cluster: [ "cluster_0", "cluster_1" ]
       fail-fast: true
       max-parallel: 1
     steps:
@@ -70,21 +69,6 @@ jobs:
           if [ -z "$ROLE" ]
           then
             export ROLE="CloudClusterAdmin"
-          fi
-
-          if [ -z "$CLUSTER_NAME" ]
-          then
-            export CLUSTER_NAME="${{ matrix.cluster }}"
-          fi
-
-          if [ -z "$CLUSTER_CLOUD" ]
-          then
-            export CLUSTER_CLOUD="azure"
-          fi
-
-          if [ -z "$CLUSTER_REGION" ]
-          then
-            export CLUSTER_REGION="eastus"
           fi
 
           echo "Email: $EMAIL"

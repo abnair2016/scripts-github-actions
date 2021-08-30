@@ -538,6 +538,20 @@ function ccloud::use_cluster() {
   return 0
 }
 
+function ccloud::find_and_use_cluster() {
+  local cluster_id=$(ccloud kafka cluster list -o json | jq -r '.[].id')
+  if [ -n "$cluster_id" ]
+  then
+    ccloud kafka cluster use $cluster_id
+    echo $cluster_id
+  else
+    echo "ERROR: Could not find any clusters"
+    exit 1
+  fi
+
+  return 0
+}
+
 function ccloud::create_service_account() {
   SERVICE_NAME=$1
 
