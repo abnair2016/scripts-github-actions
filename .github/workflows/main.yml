@@ -35,12 +35,18 @@ on:
         default: 'eastus'
 
 jobs:
-  dev:
+  build:
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
         working-directory: scripts
+    strategy:
+      matrix:
+        env: [ "dev", "test" ]
+        cluster: [ "cluster_0", "cluster_1" ]
+      fail-fast: true
+      max-parallel: 1
     steps:
       - uses: actions/checkout@v2
       - name: Run script file
@@ -58,7 +64,7 @@ jobs:
 
           if [ -z "$ENVIRONMENT_NAME" ]
           then
-            export ENVIRONMENT_NAME="dev"
+            export ENVIRONMENT_NAME="${{ matrix.env }}"
           fi
 
           if [ -z "$ROLE" ]
@@ -68,7 +74,7 @@ jobs:
 
           if [ -z "$CLUSTER_NAME" ]
           then
-            export CLUSTER_NAME="cluster_0"
+            export CLUSTER_NAME="${{ matrix.cluster }}"
           fi
 
           if [ -z "$CLUSTER_CLOUD" ]
