@@ -9,18 +9,14 @@ on:
       - '.github/*'
   workflow_dispatch:
     inputs:
-      environmentName:
-        description: 'Environment Name'
+      email:
+        description: 'Email(s)'
         required: true
-        default: 'dev'
+        default: 'abheeetest@gmail.com'
       role:
         description: 'Role'
         required: true
         default: 'CloudClusterAdmin'
-      email:
-        description: 'Email'
-        required: true
-        default: 'abheeetest@gmail.com'
 
 jobs:
   build:
@@ -41,8 +37,8 @@ jobs:
           export CCLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
           export CCLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
 
-          export EMAIL="${{ github.event.inputs.email }}"
           export ENVIRONMENT_NAME="${{ matrix.env }}"
+          export EMAIL="${{ github.event.inputs.email }}"
           if [ -n "${{ github.event.inputs.role }}" ]
           then
             export ROLE="${{ github.event.inputs.role }}"
