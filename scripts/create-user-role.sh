@@ -7,7 +7,7 @@ ccloud::validate_version_ccloud_cli $CCLOUD_MIN_VERSION || exit 1
 check_jq || exit 1
 ccloud::validate_logged_in_ccloud_cli || exit 1
 
-if [ -n "$EMAIL" ]; then
+if [ -z "$EMAIL" ]; then
   ccloud::validate_required_params_for_user_no_email $ENVIRONMENT_NAME $ROLE || exit 1
   sed -i 's/marks-and-spencer.com/gmail.com/' users.txt
   EDITED=$(grep -i -o '[A-Z0-9._%+-]\+@[A-Z0-9.-]\+\.[A-Z]\{2,4\}' users.txt)
