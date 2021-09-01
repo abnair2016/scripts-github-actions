@@ -2,7 +2,7 @@
 
 This repository is meant for the scripts used for the Events Platform Team.
 
-##Steps to request access to non-prod clusters on Confluent Cloud:
+## Steps to request access to non-prod clusters on Confluent Cloud:
 
 1. Clone the repo: `https://github.com/DigitalInnovation/events-platform-scripts.git`
 2. Create a new branch.
