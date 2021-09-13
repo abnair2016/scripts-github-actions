@@ -17,18 +17,13 @@ else
   CONFIG_FILE=$1
 fi
 
-PRESERVE_ENVIRONMENT="${PRESERVE_ENVIRONMENT:-false}"
-if [[ $PRESERVE_ENVIRONMENT == "false" ]]; then
-  read -p "This script will destroy all the resources (including the Confluent Cloud environment) in $CONFIG_FILE.  Do you want to proceed? [y/n] " -n 1 -r
-else
-  read -p "This script will destroy all the resources (except the Confluent Cloud environment) in $CONFIG_FILE.  Do you want to proceed? [y/n] " -n 1 -r
-fi
-echo
-if [[ ! $REPLY =~ ^[Yy]$ ]]
-then
+if [[ -z "$ENVIRONMENT_NAME" ]]; then
+  echo
+  echo "Environment name is a required input parameter. Please retry using: ENVIRONMENT_NAME=<environment name> ./destroy-sa.sh stack-configs/<service_account_id.config>"
   exit 1
 fi
 
+ACCESS=${ACCESS:-"DEV"}
 ccloud::validate_ccloud_config $CONFIG_FILE || exit 1
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 ccloud::generate_configs $CONFIG_FILE > /dev/null
@@ -36,4 +31,4 @@ source delta_configs/env.delta
 SERVICE_ACCOUNT_ID=$(ccloud::get_service_account $CLOUD_KEY) || exit 1
 
 echo
-ccloud::destroy_ccloud_stack $SERVICE_ACCOUNT_ID
+ccloud::delete_service_account_and_permissions $SERVICE_ACCOUNT_ID $ENVIRONMENT_NAME $ACCESS

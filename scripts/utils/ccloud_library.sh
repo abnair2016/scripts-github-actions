@@ -538,6 +538,58 @@ function ccloud::use_cluster() {
   return 0
 }
 
+function ccloud::get_clusters() {
+  local clusters=$(ccloud kafka cluster list -o json)
+  if [ -n "$clusters" ]
+  then
+    echo $clusters
+  else
+    echo "ERROR: Could not find any clusters"
+    exit 1
+  fi
+
+  return 0
+}
+
+function ccloud::get_cluster_name() {
+  local cluster_name=$(ccloud kafka cluster list -o json | jq -r '.[].name')
+  if [ -n "$cluster_name" ]
+  then
+    echo $cluster_name
+  else
+    echo "ERROR: Could not find any clusters"
+    exit 1
+  fi
+
+  return 0
+}
+
+function ccloud::get_cluster_provider() {
+  local cluster_cloud=$(ccloud kafka cluster list -o json | jq -r '.[].provider')
+  if [ -n "$cluster_cloud" ]
+  then
+    echo $cluster_cloud
+  else
+    echo "ERROR: Could not find any clusters"
+    exit 1
+  fi
+
+  return 0
+}
+
+function ccloud::get_cluster_region() {
+  local cluster_region=$(ccloud kafka cluster list -o json | jq -r '.[].region')
+  if [ -n "$cluster_region" ]
+  then
+    echo $cluster_region
+  else
+    echo "ERROR: Could not find any clusters"
+    exit 1
+  fi
+
+  return 0
+}
+
 function ccloud::find_and_use_cluster() {
   local cluster_id=$(ccloud kafka cluster list -o json | jq -r '.[].id')
   if [ -n "$cluster_id" ]
@@ -679,15 +731,55 @@ function ccloud::create_acls_all_resources_full_access() {
   ccloud kafka acl create --allow --service-account $SERVICE_ACCOUNT_ID --operation DESCRIBE_CONFIGS --topic '*' &>"$REDIRECT_TO"
 
   ccloud kafka acl create --allow --service-account $SERVICE_ACCOUNT_ID --operation READ --consumer-group '*' &>"$REDIRECT_TO"
+  ccloud kafka acl create --allow --service-account $SERVICE_ACCOUNT_ID --operation DESCRIBE --consumer-group '*' &>"$REDIRECT_TO"
   ccloud kafka acl create --allow --service-account $SERVICE_ACCOUNT_ID --operation WRITE --consumer-group '*' &>"$REDIRECT_TO"
   ccloud kafka acl create --allow --service-account $SERVICE_ACCOUNT_ID --operation CREATE --consumer-group '*' &>"$REDIRECT_TO"
-  ccloud kafka acl create --allow --service-account $SERVICE_ACCOUNT_ID --operation DESCRIBE --consumer-group '*' &>"$REDIRECT_TO"
 
   ccloud kafka acl create --allow --service-account $SERVICE_ACCOUNT_ID --operation DESCRIBE --transactional-id '*' &>"$REDIRECT_TO"
   ccloud kafka acl create --allow --service-account $SERVICE_ACCOUNT_ID --operation WRITE --transactional-id '*' &>"$REDIRECT_TO"
-  
+
   ccloud kafka acl create --allow --service-account $SERVICE_ACCOUNT_ID --operation IDEMPOTENT-WRITE --cluster-scope &>"$REDIRECT_TO"
   ccloud kafka acl create --allow --service-account $SERVICE_ACCOUNT_ID --operation DESCRIBE --cluster-scope &>"$REDIRECT_TO"
+
+  return 0
+}
+
+function ccloud::create_read_only_acls_topics() {
+  SERVICE_ACCOUNT_ID=$1
+  ENVIRONMENT_NAME=$2
+  # Setting default QUIET=false to surface potential errors
+  QUIET="${QUIET:-false}"
+  [[ $QUIET == "true" ]] &&
+   local REDIRECT_TO="/dev/null" ||
+   local REDIRECT_TO="/dev/stdout"
+
+  ccloud kafka acl create --allow --service-account $SERVICE_ACCOUNT_ID --operation READ --topic "${ENVIRONMENT_NAME}" --prefix &>"$REDIRECT_TO"
+  ccloud kafka acl create --allow --service-account $SERVICE_ACCOUNT_ID --operation DESCRIBE --topic "${ENVIRONMENT_NAME}" --prefix &>"$REDIRECT_TO"
+  ccloud kafka acl create --allow --service-account $SERVICE_ACCOUNT_ID --operation DESCRIBE_CONFIGS --topic "${ENVIRONMENT_NAME}" --prefix &>"$REDIRECT_TO"
+
+  ccloud kafka acl create --allow --service-account $SERVICE_ACCOUNT_ID --operation READ --consumer-group "${ENVIRONMENT_NAME}" --prefix &>"$REDIRECT_TO"
+  ccloud kafka acl create --allow --service-account $SERVICE_ACCOUNT_ID --operation DESCRIBE --consumer-group "${ENVIRONMENT_NAME}" --prefix &>"$REDIRECT_TO"
+
+  return 0
+}
+
+function ccloud::delete_read_only_acls_topics() {
+  SERVICE_ACCOUNT_ID=$1
+  ENVIRONMENT_NAME=$2
+  # Setting default QUIET=false to surface potential errors
+  QUIET="${QUIET:-false}"
+  [[ $QUIET == "true" ]] &&
+    local REDIRECT_TO="/dev/null" ||
+    local REDIRECT_TO="/dev/stdout"
+
+  echo "Deleting ACLs for service account ID $SERVICE_ACCOUNT_ID"
+
+  ccloud kafka acl delete --allow --service-account $SERVICE_ACCOUNT_ID --operation READ --topic "${ENVIRONMENT_NAME}" --prefix &>"$REDIRECT_TO"
+  ccloud kafka acl delete --allow --service-account $SERVICE_ACCOUNT_ID --operation DESCRIBE --topic "${ENVIRONMENT_NAME}" --prefix &>"$REDIRECT_TO"
+  ccloud kafka acl delete --allow --service-account $SERVICE_ACCOUNT_ID --operation DESCRIBE_CONFIGS --topic "${ENVIRONMENT_NAME}" --prefix &>"$REDIRECT_TO"
+
+  ccloud kafka acl delete --allow --service-account $SERVICE_ACCOUNT_ID --operation READ --consumer-group "${ENVIRONMENT_NAME}" --prefix &>"$REDIRECT_TO"
+  ccloud kafka acl delete --allow --service-account $SERVICE_ACCOUNT_ID --operation DESCRIBE --consumer-group "${ENVIRONMENT_NAME}" --prefix &>"$REDIRECT_TO"
 
   return 0
 }
@@ -710,9 +802,9 @@ function ccloud::delete_acls_ccloud_stack() {
   ccloud kafka acl delete --allow --service-account $SERVICE_ACCOUNT_ID --operation DESCRIBE_CONFIGS --topic '*' &>"$REDIRECT_TO"
 
   ccloud kafka acl delete --allow --service-account $SERVICE_ACCOUNT_ID --operation READ --consumer-group '*' &>"$REDIRECT_TO"
+  ccloud kafka acl delete --allow --service-account $SERVICE_ACCOUNT_ID --operation DESCRIBE --consumer-group '*' &>"$REDIRECT_TO"
   ccloud kafka acl delete --allow --service-account $SERVICE_ACCOUNT_ID --operation WRITE --consumer-group '*' &>"$REDIRECT_TO"
   ccloud kafka acl delete --allow --service-account $SERVICE_ACCOUNT_ID --operation CREATE --consumer-group '*' &>"$REDIRECT_TO"
-  ccloud kafka acl delete --allow --service-account $SERVICE_ACCOUNT_ID --operation DESCRIBE --consumer-group '*' &>"$REDIRECT_TO"
 
   ccloud kafka acl delete --allow --service-account $SERVICE_ACCOUNT_ID --operation DESCRIBE --transactional-id '*' &>"$REDIRECT_TO"
   ccloud kafka acl delete --allow --service-account $SERVICE_ACCOUNT_ID --operation WRITE --transactional-id '*' &>"$REDIRECT_TO"
@@ -1076,6 +1168,138 @@ function ccloud::set_kafka_cluster_use() {
   ccloud::set_kafka_cluster_use_from_api_key "$@"
 }
 
+function ccloud::create_service_account_and_permissions() {
+
+  echo "SERVICE_NAME=$SERVICE_NAME"
+  if [[ "$SERVICE_NAME" == "" ]]; then
+    echo "ERROR: SERVICE_NAME is not defined. If you are providing the SERVICE_ACCOUNT_ID to this function please also provide the SERVICE_NAME"
+    exit 1
+  fi
+  echo "CLUSTER_NAME=$CLUSTER_NAME"
+  if [[ "$CLUSTER_NAME" == "" ]]; then
+    echo "ERROR: CLUSTER_NAME is not defined."
+    exit 1
+  fi
+  echo "CLUSTER_CLOUD=$CLUSTER_CLOUD"
+  if [[ "$CLUSTER_CLOUD" == "" ]]; then
+    echo "ERROR: CLUSTER_CLOUD is not defined."
+    exit 1
+  fi
+  echo "CLUSTER_REGION=$CLUSTER_REGION"
+  if [[ "$CLUSTER_REGION" == "" ]]; then
+    echo "ERROR: CLUSTER_REGION is not defined."
+    exit 1
+  fi
+
+  ccloud::validate_version_ccloud_cli $CCLOUD_MIN_VERSION || exit 1
+
+  QUIET="${QUIET:-false}"
+  REPLICATION_FACTOR=${REPLICATION_FACTOR:-3}
+  enable_ksqldb=${1:-false}
+
+  # Check if credit card is on file, which is required for cluster creation
+  if [[ $(ccloud admin payment describe) =~ "not found" ]]; then
+    echo "ERROR: No credit card on file. Add a payment method and try again."
+    exit 1
+  fi
+
+  if [[ -z "$SERVICE_ACCOUNT_ID" ]]; then
+    SERVICE_ACCOUNT_ID=$(ccloud::create_service_account $SERVICE_NAME)
+  fi
+
+#  if [[ -z "$ENVIRONMENT" ]];
+#  then
+#    # Environment is not received so it will be created
+#    ENVIRONMENT_NAME=${ENVIRONMENT_NAME:-"ccloud-stack-$SERVICE_ACCOUNT_ID-$EXAMPLE"}
+#    ENVIRONMENT=$(ccloud::create_and_use_environment $ENVIRONMENT_NAME)
+#    (($? != 0)) && { echo "$ENVIRONMENT"; exit 1; }
+#  fi
+
+  ccloud environment use $ENVIRONMENT || exit 1
+  CLUSTER_NAME=${CLUSTER_NAME:-"demo-kafka-cluster-$SERVICE_ACCOUNT_ID"}
+  CLUSTER_CLOUD="${CLUSTER_CLOUD:-aws}"
+  CLUSTER_REGION="${CLUSTER_REGION:-us-west-2}"
+  CLUSTER=$(ccloud::use_cluster "$CLUSTER_NAME" $CLUSTER_CLOUD $CLUSTER_REGION)
+  (($? != 0)) && { echo "$CLUSTER"; exit 1; }
+  if [[ "$CLUSTER" == "" ]] ; then
+    echo "Kafka cluster id is empty"
+    echo "ERROR: Could not create cluster. Please troubleshoot"
+    exit 1
+  fi
+
+  BOOTSTRAP_SERVERS=$(ccloud kafka cluster describe $CLUSTER -o json | jq -r ".endpoint" | cut -c 12-)
+  CLUSTER_CREDS=$(ccloud::maybe_create_credentials_resource $SERVICE_ACCOUNT_ID $CLUSTER)
+
+  echo "Access to be granted: ${ACCESS}"
+  if [ "${ACCESS}" == "DEV" ]; then
+    ccloud::create_read_only_acls_topics $SERVICE_ACCOUNT_ID $ENVIRONMENT_NAME
+  else
+    ccloud::create_acls_all_resources_full_access $SERVICE_ACCOUNT_ID
+  fi
+
+  SCHEMA_REGISTRY_GEO="${SCHEMA_REGISTRY_GEO:-us}"
+  SCHEMA_REGISTRY=$(ccloud::enable_schema_registry $CLUSTER_CLOUD $SCHEMA_REGISTRY_GEO)
+  SCHEMA_REGISTRY_ENDPOINT=$(ccloud schema-registry cluster describe -o json | jq -r ".endpoint_url")
+  SCHEMA_REGISTRY_CREDS=$(ccloud::maybe_create_credentials_resource $SERVICE_ACCOUNT_ID $SCHEMA_REGISTRY)
+
+  if $enable_ksqldb ; then
+    KSQLDB_NAME=${KSQLDB_NAME:-"demo-ksqldb-$SERVICE_ACCOUNT_ID"}
+    KSQLDB=$(ccloud::maybe_create_ksqldb_app "$KSQLDB_NAME" $CLUSTER "$CLUSTER_CREDS")
+    KSQLDB_ENDPOINT=$(ccloud ksql app describe $KSQLDB -o json | jq -r ".endpoint")
+    KSQLDB_CREDS=$(ccloud::maybe_create_credentials_resource $SERVICE_ACCOUNT_ID $KSQLDB)
+    ccloud ksql app configure-acls $KSQLDB
+  fi
+
+  CLOUD_API_KEY=$(echo "$CLUSTER_CREDS" | awk -F: '{print $1}')
+  CLOUD_API_SECRET=$(echo "$CLUSTER_CREDS" | awk -F: '{print $2}')
+  ccloud api-key use "$CLOUD_API_KEY" --resource "${CLUSTER}"
+
+  if [[ -z "$SKIP_CONFIG_FILE_WRITE" ]]; then
+    if [[ -z "$CONFIG_FILE" ]]; then
+      mkdir -p stack-configs
+      CONFIG_FILE="stack-configs/java-service-account-$SERVICE_ACCOUNT_ID.config"
+    fi
+
+    cat <<EOF > $CONFIG_FILE
+# --------------------------------------
+# Confluent Cloud connection information
+# --------------------------------------
+# ENVIRONMENT ID: ${ENVIRONMENT}
+# SERVICE ACCOUNT ID: ${SERVICE_ACCOUNT_ID}
+# KAFKA CLUSTER ID: ${CLUSTER}
+# SCHEMA REGISTRY CLUSTER ID: ${SCHEMA_REGISTRY}
+EOF
+    if $enable_ksqldb ; then
+      cat <<EOF >> $CONFIG_FILE
+# KSQLDB APP ID: ${KSQLDB}
+EOF
+    fi
+    cat <<EOF >> $CONFIG_FILE
+# --------------------------------------
+sasl.mechanism=PLAIN
+security.protocol=SASL_SSL
+bootstrap.servers=${BOOTSTRAP_SERVERS}
+sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='${CLOUD_API_KEY}' password='${CLOUD_API_SECRET}';
+basic.auth.credentials.source=USER_INFO
+schema.registry.url=${SCHEMA_REGISTRY_ENDPOINT}
+basic.auth.user.info=`echo $SCHEMA_REGISTRY_CREDS | awk -F: '{print $1}'`:`echo $SCHEMA_REGISTRY_CREDS | awk -F: '{print $2}'`
+replication.factor=${REPLICATION_FACTOR}
+EOF
+    if $enable_ksqldb ; then
+      cat <<EOF >> $CONFIG_FILE
+ksql.endpoint=${KSQLDB_ENDPOINT}
+ksql.basic.auth.user.info=`echo $KSQLDB_CREDS | awk -F: '{print $1}'`:`echo $KSQLDB_CREDS | awk -F: '{print $2}'`
+EOF
+    fi
+
+    echo
+    echo "Client configuration file saved to: $CONFIG_FILE"
+  fi
+
+  return 0
+}
+
+
 
 #
 # ccloud-stack documentation:
@@ -1099,7 +1323,7 @@ function ccloud::create_ccloud_stack() {
   if [[ -z "$SERVICE_ACCOUNT_ID" ]]; then
     # Service Account is not received so it will be created
     local RANDOM_NUM=$((1 + RANDOM % 1000000))
-    SERVICE_NAME=${SERVICE_NAME:-"demo-app-$RANDOM_NUM"}
+    SERVICE_NAME=${SERVICE_NAME:-"self-generated-service-account-$RANDOM_NUM"}
     SERVICE_ACCOUNT_ID=$(ccloud::create_service_account $SERVICE_NAME)
   fi
 
@@ -1210,15 +1434,17 @@ EOF
   return 0
 }
 
-function ccloud::destroy_ccloud_stack() {
+function ccloud::delete_service_account_and_permissions() {
   if [ $# -eq 0 ];then
     echo "ccloud::destroy_ccloud_stack requires a single parameter, the service account id."
     exit 1
   fi
 
   SERVICE_ACCOUNT_ID=$1
+  ENVIRONMENT_NAME=$2
+  ACCESS=$3
 
-  PRESERVE_ENVIRONMENT="${PRESERVE_ENVIRONMENT:-false}"
+  PRESERVE_ENVIRONMENT="${PRESERVE_ENVIRONMENT:-true}"
 
   ENVIRONMENT_NAME_PREFIX=${ENVIRONMENT_NAME_PREFIX:-"ccloud-stack-$SERVICE_ACCOUNT_ID"}
   CLUSTER_NAME=${CLUSTER_NAME:-"demo-kafka-cluster-$SERVICE_ACCOUNT_ID"}
@@ -1234,7 +1460,11 @@ function ccloud::destroy_ccloud_stack() {
   echo "Destroying Confluent Cloud stack associated to service account id $SERVICE_ACCOUNT_ID"
 
   # Delete associated ACLs
-  ccloud::delete_acls_ccloud_stack $SERVICE_ACCOUNT_ID
+  if [ "${ACCESS}" == "DEV" ]; then
+    ccloud::delete_read_only_acls_topics $SERVICE_ACCOUNT_ID $ENVIRONMENT_NAME
+  else
+    ccloud::delete_acls_ccloud_stack $SERVICE_ACCOUNT_ID
+  fi
 
   if [[ "$KSQLDB_ENDPOINT" != "" ]]; then # This is just a quick check, if set there is a KSQLDB in this stack
     local ksqldb_id=$(ccloud ksql app list -o json | jq -r 'map(select(.name == "'"$KSQLDB_NAME"'")) | .[].id')
@@ -1266,6 +1496,67 @@ function ccloud::destroy_ccloud_stack() {
     fi
   fi
   
+  rm -f $CONFIG_FILE
+
+  return 0
+}
+
+function ccloud::destroy_ccloud_stack() {
+  if [ $# -eq 0 ];then
+    echo "ccloud::destroy_ccloud_stack requires a single parameter, the service account id."
+    exit 1
+  fi
+
+  SERVICE_ACCOUNT_ID=$1
+
+  PRESERVE_ENVIRONMENT="${PRESERVE_ENVIRONMENT:-false}"
+
+  ENVIRONMENT_NAME_PREFIX=${ENVIRONMENT_NAME_PREFIX:-"ccloud-stack-$SERVICE_ACCOUNT_ID"}
+  CLUSTER_NAME=${CLUSTER_NAME:-"demo-kafka-cluster-$SERVICE_ACCOUNT_ID"}
+  CONFIG_FILE=${CONFIG_FILE:-"stack-configs/java-service-account-$SERVICE_ACCOUNT_ID.config"}
+  KSQLDB_NAME=${KSQLDB_NAME:-"demo-ksqldb-$SERVICE_ACCOUNT_ID"}
+
+  # Setting default QUIET=false to surface potential errors
+  QUIET="${QUIET:-false}"
+  [[ $QUIET == "true" ]] &&
+    local REDIRECT_TO="/dev/null" ||
+    local REDIRECT_TO="/dev/stdout"
+
+  echo "Destroying Confluent Cloud stack associated to service account id $SERVICE_ACCOUNT_ID"
+
+  # Delete associated ACLs
+  ccloud::delete_acls_ccloud_stack $SERVICE_ACCOUNT_ID
+
+  if [[ "$KSQLDB_ENDPOINT" != "" ]]; then # This is just a quick check, if set there is a KSQLDB in this stack
+    local ksqldb_id=$(ccloud ksql app list -o json | jq -r 'map(select(.name == "'"$KSQLDB_NAME"'")) | .[].id')
+    echo "Deleting KSQLDB: $KSQLDB_NAME : $ksqldb_id"
+    ccloud ksql app delete $ksqldb_id &> "$REDIRECT_TO"
+  fi
+
+  # Delete connectors associated to this Kafka cluster, otherwise cluster deletion fails
+  local cluster_id=$(ccloud kafka cluster list -o json | jq -r 'map(select(.name == "'"$CLUSTER_NAME"'")) | .[].id')
+  if [[ -n "$cluster_id" ]]; then
+    ccloud connector list --cluster $cluster_id -o json | jq -r '.[].id' | xargs -I{} ccloud connector delete {}
+    echo "Deleting CLUSTER: $CLUSTER_NAME : $cluster_id"
+    ccloud kafka cluster delete $cluster_id &> "$REDIRECT_TO"
+  fi
+
+  # Delete API keys associated to the service account
+  ccloud api-key list --service-account $SERVICE_ACCOUNT_ID -o json | jq -r '.[].key' | xargs -I{} ccloud api-key delete {}
+
+  # Delete service account
+  ccloud service-account delete $SERVICE_ACCOUNT_ID &>"$REDIRECT_TO"
+
+  if [[ $PRESERVE_ENVIRONMENT == "false" ]]; then
+    local environment_id=$(ccloud environment list -o json | jq -r 'map(select(.name | startswith("'"$ENVIRONMENT_NAME_PREFIX"'"))) | .[].id')
+    if [[ "$environment_id" == "" ]]; then
+      echo "WARNING: Could not find environment with name that starts with $ENVIRONMENT_NAME_PREFIX (did you create this ccloud-stack reusing an existing environment?)"
+    else
+      echo "Deleting ENVIRONMENT: prefix $ENVIRONMENT_NAME_PREFIX : $environment_id"
+      ccloud environment delete $environment_id &> "$REDIRECT_TO"
+    fi
+  fi
+
   rm -f $CONFIG_FILE
 
   return 0
