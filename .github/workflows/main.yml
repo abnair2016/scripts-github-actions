@@ -27,7 +27,7 @@ jobs:
         working-directory: scripts
     strategy:
       matrix:
-        env: [ "dev", "test" ]
+        env: [ "dev", "test", "prod" ]
       fail-fast: true
       max-parallel: 1
     steps:
