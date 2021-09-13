@@ -41,25 +41,19 @@ while [ "$EMAIL_ADDRESS" != "$email_addr" ] ;do
   ENVIRONMENT=$(ccloud::get_environment_from_name $ENVIRONMENT_NAME)
   ccloud::use_environment $ENVIRONMENT
 
-  CLUSTERS=$(ccloud::get_clusters)
-
-  for cluster_id in $(echo "${CLUSTERS}" | jq -r '.[] | .id'); do
-    ## Gets cluster id given the cluster name, cloud provider and cloud region
-#    CLUSTER_ID=$(ccloud::find_and_use_cluster)
-    echo "Cluster: $cluster_id"
-
-    ## Sets role for user
-    echo "About to set role $ROLE for User $USER_RESOURCE_ID with email $email_addr in environment $ENVIRONMENT"
-    if [ "OrganizationAdmin" == $ROLE ] || [ "MetricsViewer" == $ROLE ]; then
-      ccloud::set_organization_level_role_for_user $USER_RESOURCE_ID $ROLE
-    elif [ "EnvironmentAdmin" == $ROLE ]; then
-      ccloud::set_environment_level_role_for_user $USER_RESOURCE_ID $ROLE $ENVIRONMENT
-    elif [ "CloudClusterAdmin" == $ROLE ]; then
+  ## Sets role for user
+  echo "About to set role $ROLE for User $USER_RESOURCE_ID with email $email_addr in environment $ENVIRONMENT"
+  if [ "OrganizationAdmin" == $ROLE ] || [ "MetricsViewer" == $ROLE ]; then
+    ccloud::set_organization_level_role_for_user $USER_RESOURCE_ID $ROLE
+  elif [ "EnvironmentAdmin" == $ROLE ]; then
+    ccloud::set_environment_level_role_for_user $USER_RESOURCE_ID $ROLE $ENVIRONMENT
+  elif [ "CloudClusterAdmin" == $ROLE ]; then
+    CLUSTERS=$(ccloud::get_clusters)
+    for cluster_id in $(echo "${CLUSTERS}" | jq -r '.[] | .id'); do
+      echo "Cluster: $cluster_id"
       ccloud::set_cluster_level_role_for_user $USER_RESOURCE_ID $ROLE $ENVIRONMENT $cluster_id
-    else
-      echo "$ROLE is not a valid role. Please retry with one of the valid roles: [OrganizationAdmin or MetricsViewer or EnvironmentAdmin or CloudClusterAdmin]"
-    fi
-  done
-
-
+    done
+  else
+    echo "$ROLE is not a valid role. Please retry with one of the valid roles: [OrganizationAdmin or MetricsViewer or EnvironmentAdmin or CloudClusterAdmin]"
+  fi
 done
