@@ -1,25 +1,15 @@
-# Events Platform Scripts
+# Github actions pipeline to add user accounts to all clusters in Confluent Cloud account
 
-This repository is meant for the scripts used for the Events Platform Team.
+This is an automated github actions pipeline to add user accounts with CloudClusterAdmin access to all clusters in a specified Confuent Cloud account
 
-## Steps to request access to non-prod clusters on Confluent Cloud:
+## Add multiple users to Confluent Cloud account:
 
-1. Clone the repo: `https://github.com/DigitalInnovation/events-platform-scripts.git`
+1. Clone the repo: `https://github.com/abnair2016/scripts-github-actions.git`
 2. Create a new branch.
 3. Navigate to the `users.txt` file in the `scripts` folder.
 4. Delete any existing entries.
 5. Add new user email addresses (1 email address per line).
-6. Raise a new Pull Request (PR) to merge the changes in your branch into the main branch. This PR will automatically notify the Events Platform team.
-7. Once the PR is reviewed and merged by the Events Platform, this will kick-off the automated scripts and add the new users to all non-prod clusters.
-8. By default, new users are provided cluster admin roles.
-9. For requesting any additional or escalated role(s), please raise a Jira ticket explaining:
-    1. Escalated Role required.
-    2. Cluster you need the escalated role for; and
-    3. The reason for the escalated role.
-10. Please assign the above Jira ticket to any one of the below from the Events Platform Team:
-    1. Abhilash.y.Nair@mnscorp.net
-    2. Fraz.Ahmad@mnscorp.net
-    3. Ushnish.Mukherjee@mnscorp.net
-    4. Amit.Vij@mnscorp.net
-
-Confluence Link: https://confluence.marksandspencer.app/display/CGE/Onboarding#Onboarding-Stepstorequestaccesstonon-prodclustersonConfluentCloud
+6. Raise a new Pull Request (PR) to merge the changes in your branch into the main branch.
+7. Once the PR is reviewed and merged, this will kick-off an automated pipeline to add the user to all the clusters in all the environments for the specified Confluent Cloud account.
+8. By default, new users will be provided with `CloudClusterAdmin` role.
+9. For roles like `OrganizationAdmin`, `EnvironmentAdmin` or `MetricsViewer` roles, please run the manual workflow instead by providing the email address or multiple email addresses separated by semi-colons and one of the aforementioned 3 roles
