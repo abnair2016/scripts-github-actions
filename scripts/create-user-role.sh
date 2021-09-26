@@ -13,7 +13,6 @@ if [ -n "$EMAIL" ]; then
   echo "$EMAIL_ADDRESS"
 else
   ccloud::validate_required_params_for_user_no_email $ENVIRONMENT_NAME $ROLE || exit 1
-  sed -i 's/marks-and-spencer.com/gmail.com/' users.txt
   EDITED=$(grep -i -o '[A-Z0-9._%+-]\+@[A-Z0-9.-]\+\.[A-Z]\{2,4\}' users.txt)
   EDITED_EMAIL=$(echo "$EDITED" | awk '{print tolower($0)}')
   EMAIL_ADDRESS="${EDITED_EMAIL//$'\n'/';'}"
