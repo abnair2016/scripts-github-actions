@@ -154,96 +154,12 @@ customServiceAcls:
       operation: WRITE
       permission: ALLOW
   another-test-service:
-    alter-cluster:
-      name: kafka-cluster
-      type: CLUSTER
-      pattern: LITERAL
-      host: "*"
-      operation: ALTER
-      permission: ALLOW
-    alter-configs-cluster:
-      name: kafka-cluster
-      type: CLUSTER
-      pattern: LITERAL
-      host: "*"
-      operation: ALTER_CONFIGS
-      permission: ALLOW
-    cluster-action-cluster:
-      name: kafka-cluster
-      type: CLUSTER
-      pattern: LITERAL
-      host: "*"
-      operation: CLUSTER_ACTION
-      permission: ALLOW
-    create-cluster:
-      name: kafka-cluster
-      type: CLUSTER
-      pattern: LITERAL
-      host: "*"
-      operation: CREATE
-      permission: ALLOW
-    describe-cluster:
-      name: kafka-cluster
-      type: CLUSTER
-      pattern: LITERAL
-      host: "*"
-      operation: DESCRIBE
-      permission: ALLOW
-    describe-configs-cluster:
-      name: kafka-cluster
-      type: CLUSTER
-      pattern: LITERAL
-      host: "*"
-      operation: DESCRIBE_CONFIGS
-      permission: ALLOW
-    idempotent-write-cluster:
-      name: kafka-cluster
-      type: CLUSTER
-      pattern: LITERAL
-      host: "*"
-      operation: IDEMPOTENT_WRITE
-      permission: ALLOW
-    create-topics:
-      name: "another-test"
-      type: TOPIC
-      pattern: PREFIXED
-      host: "*"
-      operation: CREATE
-      permission: ALLOW
-    alter-topics:
-      name: "another-test"
-      type: TOPIC
-      pattern: PREFIXED
-      host: "*"
-      operation: ALTER
-      permission: ALLOW
     describe-topics:
       name: "another-test"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
       operation: DESCRIBE
-      permission: ALLOW
-    delete-topics:
-      name: "another-test"
-      type: TOPIC
-      pattern: PREFIXED
-      host: "*"
-      operation: DELETE
-      permission: ALLOW
-    describe-topic-configs:
-      name: "another-test"
-      type: TOPIC
-      pattern: PREFIXED
-      host: "*"
-      operation: DESCRIBE_CONFIGS
-      permission: ALLOW
-    alter-topic-configs:
-      name: "another-test"
-      type: TOPIC
-      pattern: PREFIXED
-      host: "*"
-      operation: ALTER_CONFIGS
       permission: ALLOW
     read-topics:
       name: "another-test"
@@ -266,31 +182,10 @@ customServiceAcls:
       host: "*"
       operation: READ
       permission: ALLOW
-    delete-group:
-      name: "another-test"
-      type: GROUP
-      pattern: PREFIXED
-      host: "*"
-      operation: DELETE
-      permission: ALLOW
     describe-group:
       name: "another-test"
       type: GROUP
       pattern: PREFIXED
       host: "*"
       operation: DESCRIBE
-      permission: ALLOW
-    describe-transaction:
-      name: "*"
-      type: TRANSACTIONAL_ID
-      pattern: LITERAL
-      host: "*"
-      operation: DESCRIBE
-      permission: ALLOW
-    write-transaction:
-      name: "*"
-      type: TRANSACTIONAL_ID
-      pattern: LITERAL
-      host: "*"
-      operation: WRITE
       permission: ALLOW
