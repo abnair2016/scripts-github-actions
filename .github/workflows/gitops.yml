@@ -24,9 +24,7 @@ jobs:
       - name: Run script file
         run: |
           unzip \*.zip
-          echo $GITHUB_WORKSPACE
-          echo "$GITHUB_WORKSPACE/kafka-gitops" >> $GITHUB_PATH
-          echo $GITHUB_PATH
+          cd kafka-gitops
 
           export XX_CCLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
           export XX_CCLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
