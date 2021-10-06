@@ -24,7 +24,6 @@ jobs:
       - name: Run script file
         run: |
           unzip \*.zip
-          cd kafka-gitops
 
           export XX_CCLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
           export XX_CCLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
