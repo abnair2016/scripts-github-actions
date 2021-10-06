@@ -44,7 +44,7 @@ jobs:
           export KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM=${{ secrets.KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM }}
 
           chmod +x kafka-gitops
-          export PATH=./kafka-gitops:$PATH;
+          mv kafka-gitops /usr/local/bin
           kafka-gitops --file state.yaml validate
           kafka-gitops account
           kafka-gitops --file state.yaml plan -o plan.json
