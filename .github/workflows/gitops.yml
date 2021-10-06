@@ -23,6 +23,12 @@ jobs:
           ref: gitops
       - name: Run script file
         run: |
+          mkdir ccloud
+          curl -L --http1.1 https://cnfl.io/ccloud-cli | sh -s -- -b ./ccloud
+          export PATH=./ccloud:$PATH;
+
+          ccloud login
+
           unzip \*.zip
 
           export XX_CCLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
