@@ -153,3 +153,39 @@ customServiceAcls:
       host: "*"
       operation: WRITE
       permission: ALLOW
+  another-test-service:
+    describe-topics:
+      name: "another-test"
+      type: TOPIC
+      pattern: PREFIXED
+      host: "*"
+      operation: DESCRIBE
+      permission: ALLOW
+    read-topics:
+      name: "another-test"
+      type: TOPIC
+      pattern: PREFIXED
+      host: "*"
+      operation: READ
+      permission: ALLOW
+    write-topics:
+      name: "another-test"
+      type: TOPIC
+      pattern: PREFIXED
+      host: "*"
+      operation: WRITE
+      permission: ALLOW
+    read-group:
+      name: "another-test"
+      type: GROUP
+      pattern: PREFIXED
+      host: "*"
+      operation: READ
+      permission: ALLOW
+    describe-group:
+      name: "another-test"
+      type: GROUP
+      pattern: PREFIXED
+      host: "*"
+      operation: DESCRIBE
+      permission: ALLOW
