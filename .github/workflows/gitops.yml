@@ -23,6 +23,9 @@ jobs:
           ref: gitops
       - name: Run script file
         run: |
+          export CCLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
+          export CCLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
+
           mkdir ccloud
           curl -L --http1.1 https://cnfl.io/ccloud-cli | sh -s -- -b ./ccloud
           export PATH=./ccloud:$PATH;
@@ -31,8 +34,8 @@ jobs:
 
           unzip \*.zip
 
-          export XX_CCLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
-          export XX_CCLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
+          export XX_CCLOUD_EMAIL=$CCLOUD_EMAIL
+          export XX_CCLOUD_PASSWORD=$CCLOUD_PASSWORD
           export KAFKA_BOOTSTRAP_SERVERS=${{ secrets.KAFKA_BOOTSTRAP_SERVERS }}
           export KAFKA_SASL_JAAS_USERNAME=${{ secrets.KAFKA_SASL_JAAS_USERNAME }}
           export KAFKA_SASL_JAAS_PASSWORD=${{ secrets.KAFKA_SASL_JAAS_PASSWORD }}
