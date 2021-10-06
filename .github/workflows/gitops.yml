@@ -1,0 +1,44 @@
+name: Run gitops to create topics, service accounts and acls
+on:
+  push:
+    branches:
+      - gitops
+    paths-ignore:
+      - '**.md'
+      - '.github/*'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: gitops
+    strategy:
+      matrix:
+        env: [ "dev" ]
+      fail-fast: true
+      max-parallel: 1
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: gitops
+      - name: Run script file
+        run: |
+          unzip \*.zip
+          echo $GITHUB_WORKSPACE
+          echo "$GITHUB_WORKSPACE/kafka-gitops" >> $GITHUB_PATH
+          echo $GITHUB_PATH
+
+          export XX_CCLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
+          export XX_CCLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
+          export KAFKA_BOOTSTRAP_SERVERS=${{ secrets.KAFKA_BOOTSTRAP_SERVERS }}
+          export KAFKA_SASL_JAAS_USERNAME=${{ secrets.KAFKA_SASL_JAAS_USERNAME }}
+          export KAFKA_SASL_JAAS_PASSWORD=${{ secrets.KAFKA_SASL_JAAS_PASSWORD }}
+          export KAFKA_SECURITY_PROTOCOL=${{ secrets.KAFKA_SECURITY_PROTOCOL }}
+          export KAFKA_SASL_MECHANISM=${{ secrets.KAFKA_SASL_MECHANISM }}
+          export KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM=${{ secrets.KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM }}
+
+          kafka-gitops -V
+          kafka-gitops --file state.yaml validate
+          kafka-gitops account
+          kafka-gitops --file state.yaml plan -o plan.json
+          kafka-gitops --file state.yaml apply -p plan.json
