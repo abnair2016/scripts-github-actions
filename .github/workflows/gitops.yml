@@ -34,8 +34,9 @@ jobs:
           export KAFKA_SASL_MECHANISM=${{ secrets.KAFKA_SASL_MECHANISM }}
           export KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM=${{ secrets.KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM }}
 
-          kafka-gitops -V
-          kafka-gitops --file state.yaml validate
-          kafka-gitops account
-          kafka-gitops --file state.yaml plan -o plan.json
-          kafka-gitops --file state.yaml apply -p plan.json
+          chmod +x kafka-gitops
+          ./kafka-gitops -V
+          ./kafka-gitops --file state.yaml validate
+          ./kafka-gitops account
+          ./kafka-gitops --file state.yaml plan -o plan.json
+          ./kafka-gitops --file state.yaml apply -p plan.json
