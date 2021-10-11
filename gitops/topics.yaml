@@ -2,6 +2,3 @@ topics:
   test-topic:
     partitions: 3
     replication: 3
-  another-test-topic:
-    partitions: 3
-    replication: 3

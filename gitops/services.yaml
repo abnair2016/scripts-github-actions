@@ -1,5 +1,3 @@
 services:
   test-service:
     type: application
-  another-test-service:
-    type: application
