@@ -161,10 +161,3 @@ customServiceAcls:
       host: "*"
       operation: READ
       permission: ALLOW
-    describe-topics:
-      name: "cdp-user-metrics"
-      type: TOPIC
-      pattern: LITERAL
-      host: "*"
-      operation: DESCRIBE
-      permission: ALLOW
