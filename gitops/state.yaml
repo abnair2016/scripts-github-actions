@@ -153,3 +153,18 @@ customServiceAcls:
       host: "*"
       operation: WRITE
       permission: ALLOW
+  cdp-service-read-ony:
+    read-topics:
+      name: "cdp-user-metrics"
+      type: TOPIC
+      pattern: LITERAL
+      host: "*"
+      operation: READ
+      permission: ALLOW
+    describe-topics:
+      name: "cdp-user-metrics"
+      type: TOPIC
+      pattern: LITERAL
+      host: "*"
+      operation: DESCRIBE
+      permission: ALLOW

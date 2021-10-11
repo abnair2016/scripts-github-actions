@@ -2,3 +2,6 @@ topics:
   test-topic:
     partitions: 3
     replication: 3
+  cdp-user-metrics:
+    partitions: 3
+    replication: 3
