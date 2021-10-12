@@ -5,3 +5,6 @@ topics:
   cdp-user-metrics:
     partitions: 3
     replication: 3
+  dev-web-wcs-registration:
+    partitions: 6
+    replication: 3
