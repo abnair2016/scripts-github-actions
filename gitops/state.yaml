@@ -161,18 +161,11 @@ customServiceAcls:
       host: "*"
       operation: READ
       permission: ALLOW
-  wcs-service:
+  cdp-service-read-ony:
     read-topics:
-      name: "dev-web-wcs"
+      name: "cdp-user-metrics"
       type: TOPIC
-      pattern: PREFIXED
+      pattern: LITERAL
       host: "*"
       operation: READ
-      permission: ALLOW
-    describe-topics:
-      name: "dev-web-wcs"
-      type: TOPIC
-      pattern: PREFIXED
-      host: "*"
-      operation: DESCRIBE
       permission: ALLOW
