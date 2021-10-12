@@ -48,13 +48,16 @@ jobs:
           mv kafka-gitops /usr/local/bin
           VALID_STATE=$(kafka-gitops --file state.yaml validate)
           if [[ "$VALID_STATE" =~ .*"[VALID]".* ]]; then
+            kafka-gitops --file state.yaml validate
             SA_SUCCESS=$(kafka-gitops account)
             if [[ "$SA_SUCCESS" =~ .*"[SUCCESS]".* ]]; then
+              kafka-gitops account
               PLAN_OUTPUT=$(kafka-gitops --file state.yaml plan -o plan.json)
               if [[ "$PLAN_OUTPUT" =~ .*"[ERROR]".* ]]; then
                 echo "$PLAN_OUTPUT"
                 exit 1
               else
+                kafka-gitops --file state.yaml plan -o plan.json
                 kafka-gitops --file state.yaml apply -p plan.json
               fi
             else
