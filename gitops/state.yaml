@@ -165,14 +165,14 @@ customServiceAcls:
     read-topics:
       name: "dev-web-wcs"
       type: TOPIC
-      pattern: PREFIXED
+      pattern: PRE-FIXED
       host: "*"
       operation: READ
       permission: ALLOW
     describe-topics:
       name: "dev-web-wcs"
       type: TOPIC
-      pattern: PREFIXED
+      pattern: PRE-FIXED
       host: "*"
       operation: DESCRIBE
       permission: ALLOW
