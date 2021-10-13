@@ -47,11 +47,11 @@ jobs:
           chmod +x kafka-gitops
           mv kafka-gitops /usr/local/bin
           VALID_STATE=$(kafka-gitops --file state.yaml validate)
-          echo "$VALID_STATE"
+
           SA_SUCCESS=$(kafka-gitops account)
-          echo "$SA_SUCCESS"
+
           PLAN_OUTPUT=$(kafka-gitops --file state.yaml plan -o plan.json)
-          echo "$PLAN_OUTPUT"
+
           IS_VALID_STATE="No"
           IS_SA_SUCCESS="No"
           PLAN_OUTPUT_VALID="Yes"
@@ -67,11 +67,20 @@ jobs:
             PLAN_OUTPUT_VALID="No"
           fi
 
-          if [[ "$IS_VALID_STATE" == "Yes" ] && [ "$IS_SA_SUCCESS" == "Yes" ] && [ "$PLAN_OUTPUT_VALID" == "Yes" ]]
+          if [[ "$IS_VALID_STATE" == "Yes" && "$IS_SA_SUCCESS" == "Yes" && "$PLAN_OUTPUT_VALID" == "Yes" ]]; then
             kafka-gitops --file state.yaml validate
             kafka-gitops account
             kafka-gitops --file state.yaml plan -o plan.json
             kafka-gitops --file state.yaml apply -p plan.json
           else
+            if [[ "$IS_VALID_STATE" == "No" ]]; then
+              echo "$VALID_STATE"
+            elif [[ "$IS_SA_SUCCESS" == "Yes" ]]; then
+              echo "$SA_SUCCESS"
+            elif [[ "$PLAN_OUTPUT_VALID" == "No" ]]; then
+              echo "$PLAN_OUTPUT"
+            else
+              echo "Unexpected Error!"
+            fi
             exit 1
           fi
