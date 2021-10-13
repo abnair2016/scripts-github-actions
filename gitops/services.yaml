@@ -3,3 +3,5 @@ services:
     type: application
   cdp-service-read-ony:
     type: application
+  wcs-service:
+    type: application
