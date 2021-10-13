@@ -47,25 +47,13 @@ jobs:
           chmod +x kafka-gitops
           mv kafka-gitops /usr/local/bin
           VALID_STATE=$(kafka-gitops --file state.yaml validate)
-          if [[ "$VALID_STATE" =~ .*"[VALID]".* ]]; then
+          SA_SUCCESS=$(kafka-gitops account)
+          PLAN_OUTPUT=$(kafka-gitops --file state.yaml plan -o plan.json)
+          if [[ "$VALID_STATE" =~ .*"[VALID]".* ] && [ "$SA_SUCCESS" =~ .*"[SUCCESS]".* ] && [ "$PLAN_OUTPUT" !=~ .*"[ERROR]".* ]]; then
             kafka-gitops --file state.yaml validate
-            SA_SUCCESS=$(kafka-gitops account)
-            if [[ "$SA_SUCCESS" =~ .*"[SUCCESS]".* ]]; then
-              kafka-gitops account
-              PLAN_OUTPUT=$(kafka-gitops --file state.yaml plan -o plan.json)
-              if [[ "$PLAN_OUTPUT" =~ .*"[ERROR]".* ]]; then
-                echo "$PLAN_OUTPUT"
-                exit 1
-              else
-                kafka-gitops --file state.yaml plan -o plan.json
-                kafka-gitops --file state.yaml apply -p plan.json
-              fi
-            else
-              echo "$SA_SUCCESS"
-              exit 1
-            fi
+            kafka-gitops account
+            kafka-gitops --file state.yaml plan -o plan.json
+            kafka-gitops --file state.yaml apply -p plan.json
           else
-            echo "$VALID_STATE"
             exit 1
           fi
-
