@@ -49,7 +49,22 @@ jobs:
           VALID_STATE=$(kafka-gitops --file state.yaml validate)
           SA_SUCCESS=$(kafka-gitops account)
           PLAN_OUTPUT=$(kafka-gitops --file state.yaml plan -o plan.json)
-          if [[ "$VALID_STATE" =~ .*"[VALID]".* ] && [ "$SA_SUCCESS" =~ .*"[SUCCESS]".* ] && [ "$PLAN_OUTPUT" !=~ .*"[ERROR]".* ]]; then
+          IS_VALID_STATE="No"
+          IS_SA_SUCCESS="No"
+          PLAN_OUTPUT_VALID="Yes"
+          if [[ "$VALID_STATE" =~ .*"[VALID]".* ]]; then
+            IS_VALID_STATE="Yes"
+          fi
+
+          if [[ "$SA_SUCCESS" =~ .*"[SUCCESS]".* ]]; then
+            IS_SA_SUCCESS="Yes"
+          fi
+
+          if [[ "$PLAN_OUTPUT" =~ .*"[ERROR]".* ]]; then
+            PLAN_OUTPUT_VALID="No"
+          fi
+
+          if [[ "$IS_VALID_STATE" == "Yes" ] && [ "$IS_SA_SUCCESS" == "Yes" ] && [ "$PLAN_OUTPUT_VALID" == "Yes" ]]
             kafka-gitops --file state.yaml validate
             kafka-gitops account
             kafka-gitops --file state.yaml plan -o plan.json
