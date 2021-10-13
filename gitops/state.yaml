@@ -161,7 +161,7 @@ customServiceAcls:
       host: "*"
       operation: READ
       permission: ALLOW
-  wcs_service:
+  wcs-service:
     read-topics:
       name: "dev-web-wcs"
       type: TOPIC
