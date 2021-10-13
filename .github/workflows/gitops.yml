@@ -47,8 +47,11 @@ jobs:
           chmod +x kafka-gitops
           mv kafka-gitops /usr/local/bin
           VALID_STATE=$(kafka-gitops --file state.yaml validate)
+          echo "$VALID_STATE"
           SA_SUCCESS=$(kafka-gitops account)
+          echo "$SA_SUCCESS"
           PLAN_OUTPUT=$(kafka-gitops --file state.yaml plan -o plan.json)
+          echo "$PLAN_OUTPUT"
           IS_VALID_STATE="No"
           IS_SA_SUCCESS="No"
           PLAN_OUTPUT_VALID="Yes"
