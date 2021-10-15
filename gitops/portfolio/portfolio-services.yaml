@@ -1,0 +1,3 @@
+services:
+  phoenix-service:
+    type: application
