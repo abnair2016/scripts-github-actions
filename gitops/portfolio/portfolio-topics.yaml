@@ -1,4 +1,1 @@
 topics:
-  dev-web-phoenix-recommendations:
-    partitions: 3
-    replication: 3
