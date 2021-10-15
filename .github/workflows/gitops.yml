@@ -35,6 +35,10 @@ jobs:
           yq ea -i 'select(fi == 0) * select(fi == 1)' services.yaml portfolio/portfolio-services.yaml
           yq ea -i 'select(fi == 0) * select(fi == 1)' state.yaml portfolio/portfolio-state.yaml
 
+          git status
+          git add .
+          git commit -m "Updated state.yaml"
+
           export CCLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
           export CCLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
 
