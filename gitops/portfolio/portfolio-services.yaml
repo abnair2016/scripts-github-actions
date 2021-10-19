@@ -1,0 +1,5 @@
+services:
+  cdp-service:
+    type: application
+  wcs-service:
+    type: application
