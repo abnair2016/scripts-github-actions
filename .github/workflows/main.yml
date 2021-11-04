@@ -51,7 +51,7 @@ jobs:
           echo "Role: $ROLE"
 
           mkdir ccloud
-          curl -L --http1.1 https://cnfl.io/ccloud-cli | sh -s -- -b ./ccloud
+          curl -L --http1.1 https://cnfl.io/ccloud-cli | sh -s -- -b ./ccloud v1.41
           export PATH=./ccloud:$PATH;
 
           ccloud login
