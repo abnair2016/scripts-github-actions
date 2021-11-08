@@ -27,7 +27,7 @@ while [ "$EMAIL_ADDRESS" != "$email_addr" ] ;do
 
   echo "Progressing script for email: $email_addr"
   ## Invites user if user does not exist, else finds the existing user
-  EMAIL_EXISTS=$(ccloud admin user list -o json | jq -c -r '.[] | select(.email == "'"$email_addr"'")')
+  EMAIL_EXISTS=$(confluent iam user list -o json | jq -c -r '.[] | select(.email == "'"$email_addr"'")')
   if [ -z "$EMAIL_EXISTS" ]; then
     ccloud::invite_user $email_addr
   fi

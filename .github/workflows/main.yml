@@ -34,8 +34,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run script file
         run: |
-          export CCLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
-          export CCLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
+          export CCLOUD_MIN_VERSION=2.0.0
+          export CONFLUENT_CLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
+          export CONFLUENT_CLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
 
           export ENVIRONMENT_NAME="${{ matrix.env }}"
           export EMAIL="${{ github.event.inputs.email }}"
@@ -51,9 +52,11 @@ jobs:
           echo "Role: $ROLE"
 
           mkdir ccloud
-          curl -L --http1.1 https://cnfl.io/ccloud-cli | sh -s -- -b ./ccloud v1.41.0
+          curl -L --http1.1 https://cnfl.io/ccloud-cli | sh -s -- -b ./ccloud latest
           export PATH=./ccloud:$PATH;
+          ccloud update --major -y
+          export PATH=./confluent:$PATH;
+          confluent login
 
-          ccloud login
           chmod +x ./create-user-role.sh
           bash ./create-user-role.sh
