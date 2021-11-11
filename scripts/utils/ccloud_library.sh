@@ -1437,7 +1437,7 @@ function ccloud::delete_service_account_and_permissions() {
 
   SERVICE_ACCOUNT_ID=$1
   ENVIRONMENT_NAME=$2
-  ACCESS=$3-DEV
+  ACCESS=$3
 
   PRESERVE_ENVIRONMENT="${PRESERVE_ENVIRONMENT:-true}"
 
