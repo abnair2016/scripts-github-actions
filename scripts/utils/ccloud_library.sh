@@ -72,7 +72,7 @@ function ccloud::invite_user() {
 }
 function ccloud::get_user_resource_by_email() {
   EMAIL=$1
-  local FOUND_EMAIL=$(confluent iam user list -o json | jq -c -r '.[] | select(.email == "'"$EMAIL"'")')
+  local FOUND_EMAIL=$(confluent iam user invitation list -o json | jq -c -r '.[] | select(.email == "'"$EMAIL"'")')
   [[ ! -z "$FOUND_EMAIL" ]] && {
       echo "$FOUND_EMAIL" | jq -r .user_resource_id
       return 0
