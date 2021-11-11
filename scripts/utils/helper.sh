@@ -14,7 +14,7 @@ function ccloud::invite_user() {
   EMAIL=$1
 
   if [[ -n "$EMAIL" ]]; then
-    ccloud admin user invite $EMAIL
+    confluent iam user invitation create $EMAIL
   else
     echo "User email address is rquired to send invitation"
     exit 1
@@ -26,8 +26,8 @@ function ccloud::invite_user() {
 function ccloud::create_service_account() {
   SERVICE_NAME=$1
 
-  CCLOUD_EMAIL=$(ccloud prompt -f '%u')
-  OUTPUT=$(ccloud service-account create $SERVICE_NAME --description "SA run by $CCLOUD_EMAIL"  -o json)
+  CCLOUD_EMAIL=$(confluent prompt -f '%u')
+  OUTPUT=$(confluent iam service-account create $SERVICE_NAME --description "SA run by $CCLOUD_EMAIL"  -o json)
   SERVICE_ACCOUNT_ID=$(echo "$OUTPUT" | jq -r ".id")
 
   echo $SERVICE_ACCOUNT_ID

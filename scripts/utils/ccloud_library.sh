@@ -1014,10 +1014,10 @@ function ccloud::get_service_account() {
     echo "ERROR: Could not associate key $key to a service account. Verify your credentials, ensure the API key has a set resource type, and try again."
     exit 1
   fi
-#  if ! [[ "$serviceAccount" =~ ^-?[0-9]+$ ]]; then
-#    echo "ERROR: $serviceAccount value is not a valid value for a service account. Verify your credentials, ensure the API key has a set resource type, and try again."
-#    exit 1
-#  fi
+  if ! [[ "$serviceAccount" =~ ^[a-zA-Z]+-[a-zA-Z0-9]+$ ]]; then
+    echo "ERROR: $serviceAccount value is not a valid value for a service account. Verify your credentials, ensure the API key has a set resource type, and try again."
+    exit 1
+  fi
 
   echo "$serviceAccount"
 
