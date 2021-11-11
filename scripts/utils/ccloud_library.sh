@@ -74,7 +74,7 @@ function ccloud::get_user_resource_by_email() {
   EMAIL=$1
   local FOUND_EMAIL=$(confluent iam user list -o json | jq -c -r '.[] | select(.email == "'"$EMAIL"'")')
   [[ ! -z "$FOUND_EMAIL" ]] && {
-      echo "$FOUND_EMAIL" | jq -r .id
+      echo "$FOUND_EMAIL" | jq -r .user_resource_id
       return 0
     } || {
       return 1
@@ -1009,15 +1009,15 @@ function ccloud::get_service_account() {
 
   local key="$1"
 
-  serviceAccount=$(confluent api-key list -o json | jq -r -c 'map(select((.key == "'"$key"'"))) | .[].owner')
+  serviceAccount=$(confluent api-key list -o json | jq -r -c 'map(select((.key == "'"$key"'"))) | .[].owner_resource_id')
   if [[ "$serviceAccount" == "" ]]; then
     echo "ERROR: Could not associate key $key to a service account. Verify your credentials, ensure the API key has a set resource type, and try again."
     exit 1
   fi
-  if ! [[ "$serviceAccount" =~ ^-?[0-9]+$ ]]; then
-    echo "ERROR: $serviceAccount value is not a valid value for a service account. Verify your credentials, ensure the API key has a set resource type, and try again."
-    exit 1
-  fi
+#  if ! [[ "$serviceAccount" =~ ^-?[0-9]+$ ]]; then
+#    echo "ERROR: $serviceAccount value is not a valid value for a service account. Verify your credentials, ensure the API key has a set resource type, and try again."
+#    exit 1
+#  fi
 
   echo "$serviceAccount"
 
@@ -1437,7 +1437,7 @@ function ccloud::delete_service_account_and_permissions() {
 
   SERVICE_ACCOUNT_ID=$1
   ENVIRONMENT_NAME=$2
-  ACCESS=$3
+  ACCESS=$3-DEV
 
   PRESERVE_ENVIRONMENT="${PRESERVE_ENVIRONMENT:-true}"
 

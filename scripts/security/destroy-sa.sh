@@ -28,7 +28,7 @@ ccloud::validate_ccloud_config $CONFIG_FILE || exit 1
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 ccloud::generate_configs $CONFIG_FILE > /dev/null
 source delta_configs/env.delta
-SERVICE_ACCOUNT_ID=$(ccloud::get_service_account $CLOUD_KEY) || exit 1
+SERVICE_ACCOUNT_ID=$(ccloud::get_service_account "$CLOUD_KEY") || exit 1
 
-echo
+echo "$SERVICE_ACCOUNT_ID"
 ccloud::delete_service_account_and_permissions $SERVICE_ACCOUNT_ID $ENVIRONMENT_NAME $ACCESS

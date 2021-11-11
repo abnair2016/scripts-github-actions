@@ -49,7 +49,7 @@ ccloud::validate_ccloud_stack_up $CLOUD_KEY $CONFIG_FILE $enable_ksqldb || exit 
 
 echo
 echo "ACLs in this cluster:"
-ccloud kafka acl list
+confluent kafka acl list
 
 echo
 echo "Local client configuration file written to $CONFIG_FILE"
@@ -64,4 +64,4 @@ else
 fi
 echo
 echo
-echo "Tip: 'ccloud' CLI is already set to the existing environment $ENVIRONMENT"
+echo "Tip: 'confluent' CLI is already set to the existing environment $ENVIRONMENT"
