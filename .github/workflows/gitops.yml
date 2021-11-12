@@ -24,17 +24,6 @@ jobs:
           ref: gitops
       - name: Run script file
         run: |
-#          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
-#          sudo add-apt-repository ppa:rmescandon/yq
-#          sudo apt update
-#          sudo apt install yq -y
-#
-#          yq -h
-#
-#          yq ea -i 'select(fi == 0) * select(fi == 1)' topics.yaml portfolio/portfolio-topics.yaml
-#          yq ea -i 'select(fi == 0) * select(fi == 1)' services.yaml portfolio/portfolio-services.yaml
-#          yq ea -i 'select(fi == 0) * select(fi == 1)' state.yaml portfolio/portfolio-state.yaml
-
           export CONFLUENT_CLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
           export CONFLUENT_CLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
 
