@@ -1,1 +1,3 @@
 services:
+  wcs-service:
+    type: application

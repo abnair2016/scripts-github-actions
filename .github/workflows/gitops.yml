@@ -24,30 +24,29 @@ jobs:
           ref: gitops
       - name: Run script file
         run: |
-          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
-          sudo add-apt-repository ppa:rmescandon/yq
-          sudo apt update
-          sudo apt install yq -y
+#          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
+#          sudo add-apt-repository ppa:rmescandon/yq
+#          sudo apt update
+#          sudo apt install yq -y
+#
+#          yq -h
+#
+#          yq ea -i 'select(fi == 0) * select(fi == 1)' topics.yaml portfolio/portfolio-topics.yaml
+#          yq ea -i 'select(fi == 0) * select(fi == 1)' services.yaml portfolio/portfolio-services.yaml
+#          yq ea -i 'select(fi == 0) * select(fi == 1)' state.yaml portfolio/portfolio-state.yaml
 
-          yq -h
+          export CONFLUENT_CLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
+          export CONFLUENT_CLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
 
-          yq ea -i 'select(fi == 0) * select(fi == 1)' topics.yaml portfolio/portfolio-topics.yaml
-          yq ea -i 'select(fi == 0) * select(fi == 1)' services.yaml portfolio/portfolio-services.yaml
-          yq ea -i 'select(fi == 0) * select(fi == 1)' state.yaml portfolio/portfolio-state.yaml
-
-          export CCLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
-          export CCLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
-
-          mkdir ccloud
-          curl -L --http1.1 https://cnfl.io/ccloud-cli | sh -s -- -b ./ccloud
-          export PATH=./ccloud:$PATH;
-
-          ccloud login
+          mkdir confluent
+          curl -sL --http1.1 https://cnfl.io/cli | sh -s -- -b ./confluent v2.1.0
+          export PATH=./confluent:$PATH;
+          confluent login
 
           unzip \*.zip
 
-          export XX_CCLOUD_EMAIL=$CCLOUD_EMAIL
-          export XX_CCLOUD_PASSWORD=$CCLOUD_PASSWORD
+          export XX_CCLOUD_EMAIL=$CONFLUENT_CLOUD_EMAIL
+          export XX_CCLOUD_PASSWORD=$CONFLUENT_CLOUD_PASSWORD
           export KAFKA_BOOTSTRAP_SERVERS=${{ secrets.KAFKA_BOOTSTRAP_SERVERS }}
           export KAFKA_SASL_JAAS_USERNAME=${{ secrets.KAFKA_SASL_JAAS_USERNAME }}
           export KAFKA_SASL_JAAS_PASSWORD=${{ secrets.KAFKA_SASL_JAAS_PASSWORD }}

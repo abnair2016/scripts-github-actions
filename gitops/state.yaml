@@ -12,3 +12,18 @@ settings:
     services: services.yaml
 
 customServiceAcls:
+  wcs-service:
+    read-topics:
+      name: "dev-web-wcs"
+      type: TOPIC
+      pattern: PREFIXED
+      host: "*"
+      operation: READ
+      permission: ALLOW
+    describe-topics:
+      name: "dev-web-wcs"
+      type: TOPIC
+      pattern: PREFIXED
+      host: "*"
+      operation: DESCRIBE
+      permission: ALLOW
