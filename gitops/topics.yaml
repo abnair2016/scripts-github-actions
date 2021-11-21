@@ -1,22 +1,13 @@
 topics:
-#  dev-web-cdp-unvalidated:
-#    partitions: 3
-#    replication: 3
-#  dev-web-cdp-validated:
-#    partitions: 3
-#    replication: 3
-#  dev-web-cdp-dlq:
-#    partitions: 3
-#    replication: 3
-#  dev-web-wcs-registration:
-#    partitions: 6
-#    replication: 3
-  customer-personalisation-cdp-registration-unvalidated:
+  dev-web-cdp-unvalidated:
     partitions: 3
     replication: 3
-  customer-personalisation-cdp-registration-validated:
+  dev-web-cdp-validated:
     partitions: 3
     replication: 3
-  customer-personalisation-cdp-registration-unvalidated-dlq:
+  dev-web-cdp-dlq:
     partitions: 3
+    replication: 3
+  dev-web-wcs-registration:
+    partitions: 6
     replication: 3
