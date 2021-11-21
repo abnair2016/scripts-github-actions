@@ -1,4 +1,13 @@
 topics:
+  dev-web-cdp-unvalidated:
+    partitions: 3
+    replication: 3
+  dev-web-cdp-validated:
+    partitions: 3
+    replication: 3
+  dev-web-cdp-dlq:
+    partitions: 3
+    replication: 3
   dev-web-wcs-registration:
-    partitions: 1
+    partitions: 6
     replication: 3
