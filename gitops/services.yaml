@@ -1,5 +1,9 @@
 services:
-  cdp-service:
+#  cdp-service:
+#    type: application
+#  wcs-service:
+#    type: application
+  mns-customer-personalisation-cdp-registration-read:
     type: application
-  wcs-service:
+  mns-customer-personalisation-cdp-registration-read_write:
     type: application
