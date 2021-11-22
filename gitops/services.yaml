@@ -1,5 +1,5 @@
 services:
-  customer-personalisation-cdp-registration-read:
+  cdp-service:
     type: application
-  customer-personalisation-cdp-registration-read_write:
+  wcs-service:
     type: application
