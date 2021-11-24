@@ -13,42 +13,8 @@ settings:
 
 customServiceAcls:
   # replace below service account and ACLs with specific ACLs you require with your service account's functional access (read, read-write, admin)
-  technology_group-business_group-owner-functional_area-service_name-functional_access:
-    alter-cluster:
-      name: kafka-cluster
-      type: CLUSTER
-      pattern: LITERAL
-      host: "*"
-      operation: ALTER
-      permission: ALLOW
-    describe-cluster:
-      name: kafka-cluster
-      type: CLUSTER
-      pattern: LITERAL
-      host: "*"
-      operation: DESCRIBE
-      permission: ALLOW
-    describe-configs-cluster:
-      name: kafka-cluster
-      type: CLUSTER
-      pattern: LITERAL
-      host: "*"
-      operation: DESCRIBE_CONFIGS
-      permission: ALLOW
-    alter-configs-cluster:
-      name: kafka-cluster
-      type: CLUSTER
-      pattern: LITERAL
-      host: "*"
-      operation: ALTER_CONFIGS
-      permission: ALLOW
-    cluster-action-cluster:
-      name: kafka-cluster
-      type: CLUSTER
-      pattern: LITERAL
-      host: "*"
-      operation: CLUSTER_ACTION
-      permission: ALLOW
+  owner-service_name-functional_access:
+    # ACL to allow creating topics with a prefix specified in the name
     create-topics:
       name: "technology_group-business_group-owner-functional_area"
       type: TOPIC
@@ -56,6 +22,7 @@ customServiceAcls:
       host: "*"
       operation: CREATE
       permission: ALLOW
+    # ACL to allow altering topics with a prefix specified in the name
     alter-topics:
       name: "technology_group-business_group-owner-functional_area"
       type: TOPIC
@@ -63,6 +30,7 @@ customServiceAcls:
       host: "*"
       operation: ALTER
       permission: ALLOW
+    # ACL to allow describing all topics with a prefix specified in the name
     describe-topics:
       name: "technology_group-business_group-owner-functional_area"
       type: TOPIC
@@ -70,6 +38,7 @@ customServiceAcls:
       host: "*"
       operation: DESCRIBE
       permission: ALLOW
+    # ACL to allow deleting all topics with a prefix specified in the name
     delete-topics:
       name: "technology_group-business_group-owner-functional_area"
       type: TOPIC
@@ -77,6 +46,7 @@ customServiceAcls:
       host: "*"
       operation: DELETE
       permission: ALLOW
+    # ACL to allow describing configs for all topics with a prefix specified in the name
     describe-topic-configs:
       name: "technology_group-business_group-owner-functional_area"
       type: TOPIC
@@ -84,6 +54,7 @@ customServiceAcls:
       host: "*"
       operation: DESCRIBE_CONFIGS
       permission: ALLOW
+    # ACL to allow altering configs for all topics with a prefix specified in the name
     alter-topic-configs:
       name: "technology_group-business_group-owner-functional_area"
       type: TOPIC
@@ -91,6 +62,7 @@ customServiceAcls:
       host: "*"
       operation: ALTER_CONFIGS
       permission: ALLOW
+    # ACL to allow reading topics with a prefix specified in the name
     read-topics:
       name: "technology_group-business_group-owner-functional_area"
       type: TOPIC
@@ -98,6 +70,7 @@ customServiceAcls:
       host: "*"
       operation: READ
       permission: ALLOW
+    # ACL to allow writing topics with a prefix specified in the name
     write-topics:
       name: "technology_group-business_group-owner-functional_area"
       type: TOPIC
@@ -105,24 +78,27 @@ customServiceAcls:
       host: "*"
       operation: WRITE
       permission: ALLOW
+    # ACL to allow reading a consumer group with a prefix specified in the name
     read-group:
-      name: "technology_group-business_group-owner-functional_area"
+      name: "mns"
       type: GROUP
       pattern: PREFIXED
       host: "*"
       operation: READ
       permission: ALLOW
+    # ACL to allow deleting a consumer group with a prefix specified in the name
     delete-group:
-      name: "technology_group-business_group-owner-functional_area"
+      name: "external"
       type: GROUP
       pattern: PREFIXED
       host: "*"
       operation: DELETE
       permission: ALLOW
+    # ACL to allow describing all consumer groups
     describe-group:
-      name: "technology_group-business_group-owner-functional_area"
+      name: "*"
       type: GROUP
-      pattern: PREFIXED
+      pattern: LITERAL
       host: "*"
       operation: DESCRIBE
       permission: ALLOW
