@@ -1,5 +1,3 @@
 services:
-  cdp-service:
-    type: application
-  wcs-service:
+  technology_group-business_group-owner-functional_area-service_name-functional_access:
     type: application

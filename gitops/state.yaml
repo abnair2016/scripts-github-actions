@@ -12,7 +12,8 @@ settings:
     services: services.yaml
 
 customServiceAcls:
-  cdp-service:
+  # replace below service account and ACLs with specific ACLs you require with your service account's functional access (read, read-write, admin)
+  technology_group-business_group-owner-functional_area-service_name-functional_access:
     alter-cluster:
       name: kafka-cluster
       type: CLUSTER
@@ -49,93 +50,78 @@ customServiceAcls:
       operation: CLUSTER_ACTION
       permission: ALLOW
     create-topics:
-      name: "dev-web-cdp"
+      name: "technology_group-business_group-owner-functional_area"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
       operation: CREATE
       permission: ALLOW
     alter-topics:
-      name: "dev-web-cdp"
+      name: "technology_group-business_group-owner-functional_area"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
       operation: ALTER
       permission: ALLOW
     describe-topics:
-      name: "dev-web-cdp"
+      name: "technology_group-business_group-owner-functional_area"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
       operation: DESCRIBE
       permission: ALLOW
     delete-topics:
-      name: "dev-web-cdp"
+      name: "technology_group-business_group-owner-functional_area"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
       operation: DELETE
       permission: ALLOW
     describe-topic-configs:
-      name: "dev-web-cdp"
+      name: "technology_group-business_group-owner-functional_area"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
       operation: DESCRIBE_CONFIGS
       permission: ALLOW
     alter-topic-configs:
-      name: "dev-web-cdp"
+      name: "technology_group-business_group-owner-functional_area"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
       operation: ALTER_CONFIGS
       permission: ALLOW
     read-topics:
-      name: "dev-web-cdp"
+      name: "technology_group-business_group-owner-functional_area"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
       operation: READ
       permission: ALLOW
     write-topics:
-      name: "dev-web-cdp"
+      name: "technology_group-business_group-owner-functional_area"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
       operation: WRITE
       permission: ALLOW
     read-group:
-      name: "dev-web-cdp"
+      name: "technology_group-business_group-owner-functional_area"
       type: GROUP
       pattern: PREFIXED
       host: "*"
       operation: READ
       permission: ALLOW
     delete-group:
-      name: "dev-web-cdp"
+      name: "technology_group-business_group-owner-functional_area"
       type: GROUP
       pattern: PREFIXED
       host: "*"
       operation: DELETE
       permission: ALLOW
     describe-group:
-      name: "dev-web-cdp"
+      name: "technology_group-business_group-owner-functional_area"
       type: GROUP
-      pattern: PREFIXED
-      host: "*"
-      operation: DESCRIBE
-      permission: ALLOW
-  wcs-service:
-    read-topics:
-      name: "dev-web-wcs"
-      type: TOPIC
-      pattern: PREFIXED
-      host: "*"
-      operation: READ
-      permission: ALLOW
-    describe-topics:
-      name: "dev-web-wcs"
-      type: TOPIC
       pattern: PREFIXED
       host: "*"
       operation: DESCRIBE
