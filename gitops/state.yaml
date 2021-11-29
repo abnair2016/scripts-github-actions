@@ -4,9 +4,9 @@ settings:
   topics:
     defaults:
       replication: 3
-#    blacklist:
-#      prefixed:
-#        - _confluent
+    blacklist:
+      prefixed:
+        - _confluent
   files:
     topics: topics.yaml
     services: services.yaml
@@ -34,24 +34,24 @@ customServiceAcls:
       host: "*"
       operation: WRITE
       permission: ALLOW
-    read-group:
-      name: "cust-perso-phoenix-recommendations"
-      type: GROUP
-      pattern: PREFIXED
-      host: "*"
-      operation: READ
-      permission: ALLOW
-    describe-group:
-      name: "cust-perso-phoenix-recommendations"
-      type: GROUP
-      pattern: PREFIXED
-      host: "*"
-      operation: DESCRIBE
-      permission: ALLOW
-    write-group:
-      name: "cust-perso-phoenix-recommendations"
-      type: GROUP
-      pattern: PREFIXED
-      host: "*"
-      operation: WRITE
-      permission: ALLOW
+#    read-group:
+#      name: "cust-perso-phoenix-recommendations"
+#      type: GROUP
+#      pattern: PREFIXED
+#      host: "*"
+#      operation: READ
+#      permission: ALLOW
+#    describe-group:
+#      name: "cust-perso-phoenix-recommendations"
+#      type: GROUP
+#      pattern: PREFIXED
+#      host: "*"
+#      operation: DESCRIBE
+#      permission: ALLOW
+#    write-group:
+#      name: "cust-perso-phoenix-recommendations"
+#      type: GROUP
+#      pattern: PREFIXED
+#      host: "*"
+#      operation: WRITE
+#      permission: ALLOW

@@ -70,8 +70,8 @@ jobs:
           if [[ "$IS_VALID_STATE" == "Yes" && "$IS_SA_SUCCESS" == "Yes" && "$PLAN_OUTPUT_VALID" == "Yes" ]]; then
             kafka-gitops --no-delete --file state.yaml validate
             kafka-gitops account
-            kafka-gitops --file state.yaml plan -o plan.json
-            kafka-gitops --file state.yaml apply -p plan.json
+            kafka-gitops --no-delete --file state.yaml plan -o plan.json
+            kafka-gitops --no-delete --file state.yaml apply -p plan.json
           else
             if [[ "$IS_VALID_STATE" == "No" ]]; then
               echo "$VALID_STATE"

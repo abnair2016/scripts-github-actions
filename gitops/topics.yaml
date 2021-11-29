@@ -1,4 +1,7 @@
 topics:
-  cust-perso-phoenix-recommendations-eventcollector-activity:
+#  cust-perso-phoenix-recommendations-eventcollector-activity:
+#    partitions: 10
+#    replication: 3
+  cust-perso-phoenix-recommendations-eventcollector-activities:
     partitions: 10
     replication: 3
