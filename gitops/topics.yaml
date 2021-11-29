@@ -1,17 +1,17 @@
 topics:
   # replace sample Public topic naming convention with your topic
-  technology_group-business_group-owner-functional_area-topic_description:
+  tech-busgrp-owner-functional_area-topic_description:
     partitions: 3
     replication: 3
   # replace sample Public DLQ topic naming convention with your topic
-  technology_group-business_group-owner-functional_area-topic_description-dlq:
+  tech-busgrp-functional_area-topic_description-dlq:
     partitions: 1
     replication: 3
   # replace sample Private topic naming convention with your topic
-  technology_group-business_group-owner-functional_area-service_name-topic_description:
+  tech-busgrp-owner-functional_area-service_name-topic_description:
     partitions: 3
     replication: 3
   # replace sample Private DLQ topic naming convention with your topic
-  technology_group-business_group-owner-functional_area-service_name-topic_description-dlq:
+  tech-busgrp-owner-functional_area-service_name-topic_description-dlq:
     partitions: 1
     replication: 3

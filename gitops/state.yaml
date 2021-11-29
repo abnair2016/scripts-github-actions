@@ -13,10 +13,10 @@ settings:
 
 customServiceAcls:
   # replace below service account and ACLs with specific ACLs you require with your service account's functional access (read, read-write, admin)
-  owner-service_name-functional_access:
+  tech-busgrp-owner-service_name-functional_access:
     # ACL to allow creating topics with a prefix specified in the name
     create-topics:
-      name: "technology_group-business_group-owner-functional_area"
+      name: "tech-busgrp-owner-functional_area"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
@@ -24,7 +24,7 @@ customServiceAcls:
       permission: ALLOW
     # ACL to allow altering topics with a prefix specified in the name
     alter-topics:
-      name: "technology_group-business_group-owner-functional_area"
+      name: "tech-busgrp-owner-functional_area"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
@@ -32,7 +32,7 @@ customServiceAcls:
       permission: ALLOW
     # ACL to allow describing all topics with a prefix specified in the name
     describe-topics:
-      name: "technology_group-business_group-owner-functional_area"
+      name: "tech-busgrp-owner-functional_area"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
@@ -40,7 +40,7 @@ customServiceAcls:
       permission: ALLOW
     # ACL to allow deleting all topics with a prefix specified in the name
     delete-topics:
-      name: "technology_group-business_group-owner-functional_area"
+      name: "tech-busgrp-owner-functional_area"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
@@ -48,7 +48,7 @@ customServiceAcls:
       permission: ALLOW
     # ACL to allow describing configs for all topics with a prefix specified in the name
     describe-topic-configs:
-      name: "technology_group-business_group-owner-functional_area"
+      name: "tech-busgrp-owner-functional_area"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
@@ -56,7 +56,7 @@ customServiceAcls:
       permission: ALLOW
     # ACL to allow altering configs for all topics with a prefix specified in the name
     alter-topic-configs:
-      name: "technology_group-business_group-owner-functional_area"
+      name: "tech-busgrp-owner-functional_area"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
@@ -64,7 +64,7 @@ customServiceAcls:
       permission: ALLOW
     # ACL to allow reading topics with a prefix specified in the name
     read-topics:
-      name: "technology_group-business_group-owner-functional_area"
+      name: "tech-busgrp-owner-functional_area"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
@@ -72,7 +72,7 @@ customServiceAcls:
       permission: ALLOW
     # ACL to allow writing topics with a prefix specified in the name
     write-topics:
-      name: "technology_group-business_group-owner-functional_area"
+      name: "tech-busgrp-owner-functional_area"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
@@ -94,7 +94,7 @@ customServiceAcls:
       host: "*"
       operation: DELETE
       permission: ALLOW
-    # ACL to allow describing all consumer groups
+    # ACL to allow describing all consumer groups with a prefix specified in the name
     describe-group:
       name: "*"
       type: GROUP

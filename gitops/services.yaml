@@ -1,3 +1,3 @@
 services:
-  owner-service_name-functional_access:
+  tech-busgrp-owner-service_name-functional_access:
     type: application
