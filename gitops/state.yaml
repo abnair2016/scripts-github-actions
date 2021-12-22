@@ -12,46 +12,175 @@ settings:
     services: services.yaml
 
 customServiceAcls:
-  cust-perso-phoenix-recommendations:
-    describe-topics:
-      name: "cust-perso-phoenix-recommendations"
-      type: TOPIC
-      pattern: PREFIXED
-      host: "*"
-      operation: DESCRIBE
-      permission: ALLOW
+  cust-perso-cdp-registration-read:
     read-topics:
-      name: "cust-perso-phoenix-recommendations"
+      name: "cust-perso-cdp-registration"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
       operation: READ
       permission: ALLOW
-    write-topics:
-      name: "cust-perso-phoenix-recommendations"
+    describe-topics:
+      name: "cust-perso-cdp-registration"
       type: TOPIC
       pattern: PREFIXED
       host: "*"
-      operation: WRITE
+      operation: DESCRIBE
       permission: ALLOW
-#    read-group:
-#      name: "cust-perso-phoenix-recommendations"
-#      type: GROUP
+    read-group:
+      name: "cust-perso-cdp-registration"
+      type: GROUP
+      pattern: PREFIXED
+      host: "*"
+      operation: READ
+      permission: ALLOW
+#    write-topics:
+#      name: "mns-customer-personalisation-cdp-registration"
+#      type: TOPIC
+#      pattern: PREFIXED
+#      host: "*"
+#      operation: WRITE
+#      permission: ALLOW
+#  cdp-service:
+#     alter-cluster:
+#       name: kafka-cluster
+#       type: CLUSTER
+#       pattern: LITERAL
+#       host: "*"
+#       operation: ALTER
+#       permission: ALLOW
+#     describe-cluster:
+#       name: kafka-cluster
+#       type: CLUSTER
+#       pattern: LITERAL
+#       host: "*"
+#       operation: DESCRIBE
+#       permission: ALLOW
+#     describe-configs-cluster:
+#       name: kafka-cluster
+#       type: CLUSTER
+#       pattern: LITERAL
+#       host: "*"
+#       operation: DESCRIBE_CONFIGS
+#       permission: ALLOW
+#     alter-configs-cluster:
+#       name: kafka-cluster
+#       type: CLUSTER
+#       pattern: LITERAL
+#       host: "*"
+#       operation: ALTER_CONFIGS
+#       permission: ALLOW
+#     cluster-action-cluster:
+#       name: kafka-cluster
+#       type: CLUSTER
+#       pattern: LITERAL
+#       host: "*"
+#       operation: CLUSTER_ACTION
+#       permission: ALLOW
+#     create-topics:
+#       name: "dev-web-cdp"
+#       type: TOPIC
+#       pattern: PREFIXED
+#       host: "*"
+#       operation: CREATE
+#       permission: ALLOW
+#     alter-topics:
+#       name: "dev-web-cdp"
+#       type: TOPIC
+#       pattern: PREFIXED
+#       host: "*"
+#       operation: ALTER
+#       permission: ALLOW
+#     describe-topics:
+#       name: "dev-web-cdp"
+#       type: TOPIC
+#       pattern: PREFIXED
+#       host: "*"
+#       operation: DESCRIBE
+#       permission: ALLOW
+#     delete-topics:
+#       name: "dev-web-cdp"
+#       type: TOPIC
+#       pattern: PREFIXED
+#       host: "*"
+#       operation: DELETE
+#       permission: ALLOW
+#     describe-topic-configs:
+#       name: "dev-web-cdp"
+#       type: TOPIC
+#       pattern: PREFIXED
+#       host: "*"
+#       operation: DESCRIBE_CONFIGS
+#       permission: ALLOW
+#     alter-topic-configs:
+#       name: "dev-web-cdp"
+#       type: TOPIC
+#       pattern: PREFIXED
+#       host: "*"
+#       operation: ALTER_CONFIGS
+#       permission: ALLOW
+#     read-topics:
+#       name: "dev-web-cdp"
+#       type: TOPIC
+#       pattern: PREFIXED
+#       host: "*"
+#       operation: READ
+#       permission: ALLOW
+#     write-topics:
+#       name: "dev-web-cdp"
+#       type: TOPIC
+#       pattern: PREFIXED
+#       host: "*"
+#       operation: WRITE
+#       permission: ALLOW
+#     read-group:
+#       name: "dev-web-cdp"
+#       type: GROUP
+#       pattern: PREFIXED
+#       host: "*"
+#       operation: READ
+#       permission: ALLOW
+#     delete-group:
+#       name: "dev-web-cdp"
+#       type: GROUP
+#       pattern: PREFIXED
+#       host: "*"
+#       operation: DELETE
+#       permission: ALLOW
+#     describe-group:
+#       name: "dev-web-cdp"
+#       type: GROUP
+#       pattern: PREFIXED
+#       host: "*"
+#       operation: DESCRIBE
+#       permission: ALLOW
+#  wcs-service:
+#     read-topics:
+#       name: "dev-web-wcs"
+#       type: TOPIC
+#       pattern: PREFIXED
+#       host: "*"
+#       operation: READ
+#       permission: ALLOW
+#     describe-topics:
+#       name: "dev-web-wcs"
+#       type: TOPIC
+#       pattern: PREFIXED
+#       host: "*"
+#       operation: DESCRIBE
+#       permission: ALLOW
+#  customer-personalisation-cdp-registration-read:
+#    read-topics:
+#      name: "customer-personalisation-cdp-registration"
+#      type: TOPIC
 #      pattern: PREFIXED
 #      host: "*"
 #      operation: READ
 #      permission: ALLOW
-#    describe-group:
-#      name: "cust-perso-phoenix-recommendations"
-#      type: GROUP
+#    describe-topics:
+#      name: "customer-personalisation-cdp-registration"
+#      type: TOPIC
 #      pattern: PREFIXED
 #      host: "*"
 #      operation: DESCRIBE
-#      permission: ALLOW
-#    write-group:
-#      name: "cust-perso-phoenix-recommendations"
-#      type: GROUP
-#      pattern: PREFIXED
-#      host: "*"
-#      operation: WRITE
 #      permission: ALLOW

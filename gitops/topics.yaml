@@ -1,7 +1,4 @@
 topics:
-#  cust-perso-phoenix-recommendations-eventcollector-activity:
-#    partitions: 10
-#    replication: 3
-  cust-perso-phoenix-recommendations-eventcollector-activities:
-    partitions: 10
+  cust-perso-cdp-registration-unvalidated:
+    partitions: 3
     replication: 3
