@@ -5,19 +5,10 @@ unzip \*.zip
 chmod +x kafka-gitops
 mv kafka-gitops /usr/local/bin
 
-#mkdir ccloud
-#curl -L --http1.1 https://cnfl.io/ccloud-cli | sh -s -- -b ./ccloud
-#export PATH=./ccloud:$PATH;
-#ccloud login
-
-export CCLOUD_MIN_VERSION=2.0.0
-export CONFLUENT_CLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
-export CONFLUENT_CLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
-
-mkdir confluent
-curl -sL --http1.1 https://cnfl.io/cli | sh -s -- -b ./confluent v2.3.1
-export PATH=./confluent:$PATH;
-confluent login
+mkdir ccloud
+curl -L --http1.1 https://cnfl.io/ccloud-cli | sh -s -- -b ./ccloud
+export PATH=./ccloud:$PATH;
+ccloud login
 
 VALIDATE_STATE=$(kafka-gitops --no-delete --file state.yaml validate)
 echo "State file validation status: $VALIDATE_STATE"
