@@ -28,7 +28,7 @@ jobs:
         shell: bash
         working-directory: gitops
 
-    environment: digital-development-33790
+    environment: development
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
