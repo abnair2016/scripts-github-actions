@@ -1,59 +1,51 @@
-name: Run create user role script on manually triggered workflow
+# This is a basic workflow to help you get started with Actions
+name: Kafka Gitops
+env:
+  KAFKA_SECURITY_PROTOCOL: "SASL_SSL"
+  KAFKA_SASL_MECHANISM: "PLAIN"
+  KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: "HTTPS"
+
+# Controls when the workflow will run
 on:
+  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches:
-      - master
-      - main
+    branches: [ gitops ]
     paths-ignore:
       - '**.md'
       - '.github/*'
-  workflow_dispatch:
-    inputs:
-      email:
-        description: 'Email(s)'
-        required: true
-        default: 'abheeetest@gmail.com'
-      role:
-        description: 'Role'
-        required: true
-        default: 'CloudClusterAdmin'
 
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
+  deploy-to-dev:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
+
     defaults:
       run:
         shell: bash
-        working-directory: scripts
-    strategy:
-      matrix:
-        env: [ "dev", "test", "prod" ]
-      fail-fast: true
-      max-parallel: 1
+        working-directory: gitops
+
+    environment: digital-development-33790
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: Run script file
+
+      # Runs a set of commands using the runners shell
+      - name: Run script
         run: |
           export CCLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
           export CCLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
+          export KAFKA_BOOTSTRAP_SERVERS=${{ secrets.KAFKA_BOOTSTRAP_SERVERS }}
+          export KAFKA_SASL_JAAS_USERNAME=${{ secrets.KAFKA_SASL_JAAS_USERNAME }}
+          export KAFKA_SASL_JAAS_PASSWORD=${{ secrets.KAFKA_SASL_JAAS_PASSWORD }}
+          export KAFKA_SECURITY_PROTOCOL=${{ env.KAFKA_SECURITY_PROTOCOL }}
+          export KAFKA_SASL_MECHANISM=${{ env.KAFKA_SASL_MECHANISM }}
+          export KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM=${{ env.KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM }}
 
-          export ENVIRONMENT_NAME="${{ matrix.env }}"
-          export EMAIL="${{ github.event.inputs.email }}"
-          if [ -n "${{ github.event.inputs.role }}" ]
-          then
-            export ROLE="${{ github.event.inputs.role }}"
-          else
-            export ROLE="CloudClusterAdmin"
-          fi
-
-          echo "Email: $EMAIL"
-          echo "Environment Name: $ENVIRONMENT_NAME"
-          echo "Role: $ROLE"
-
-          mkdir ccloud
-          curl -L --http1.1 https://cnfl.io/ccloud-cli | sh -s -- -b ./ccloud
-          export PATH=./ccloud:$PATH;
-
-          ccloud login
-          chmod +x ./create-user-role.sh
-          bash ./create-user-role.sh
+          chmod +x ./gitops-script-file.sh
+          bash ./gitops-script-file.sh

@@ -1,4 +1,4 @@
 topics:
-  cust-perso-cdp-registration-unvalidated:
-    partitions: 3
+  cust-perso-ep-demo:
+    partitions: 1
     replication: 3

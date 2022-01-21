@@ -1,3 +1,5 @@
 services:
-  cust-perso-cdp-registration-read:
+  cust-perso-ep-read_write:
+    type: application
+  cust-perso-ep-admin:
     type: application
