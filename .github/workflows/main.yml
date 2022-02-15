@@ -1,22 +1,33 @@
 name: Run create user role script on manually triggered workflow
 on:
-  push:
-    branches:
-      - master
-      - main
-    paths-ignore:
-      - '**.md'
-      - '.github/*'
+#  push:
+#    branches:
+#      - acls
+#    paths-ignore:
+#      - '**.md'
+#      - '.github/*'
   workflow_dispatch:
     inputs:
-      email:
-        description: 'Email(s)'
+      environment_name:
+        type: choice
+        description: Environment Name
         required: true
-        default: 'abheeetest@gmail.com'
-      role:
-        description: 'Role'
+        options:
+          - dev
+          - test
+          - prod
+      cluster_name:
+        type: choice
+        description: Cluster Name
         required: true
-        default: 'CloudClusterAdmin'
+        options:
+          - dev-cluster
+          - test-cluster
+          - prod-cluster
+      sa_names:
+        description: 'Service Account Name(s)'
+        required: true
+        default: 'cust-perso-events_platform-read_only;cust-perso-events_platform-read_write;cust-perso-events_platform-admin'
 
 jobs:
   build:
@@ -25,36 +36,26 @@ jobs:
       run:
         shell: bash
         working-directory: scripts
-    strategy:
-      matrix:
-        env: [ "dev", "test", "prod" ]
-      fail-fast: true
-      max-parallel: 1
     steps:
       - uses: actions/checkout@v2
       - name: Run script file
         run: |
-          export CCLOUD_MIN_VERSION=2.1.0
+          export CCLOUD_MIN_VERSION=2.0.0
           export CONFLUENT_CLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
           export CONFLUENT_CLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
 
-          export ENVIRONMENT_NAME="${{ matrix.env }}"
-          export EMAIL="${{ github.event.inputs.email }}"
-          if [ -n "${{ github.event.inputs.role }}" ]
-          then
-            export ROLE="${{ github.event.inputs.role }}"
-          else
-            export ROLE="CloudClusterAdmin"
-          fi
+          export ENVIRONMENT_NAME="${{ github.event.inputs.environment_name }}"
+          export CLUSTER_NAME="${{ github.event.inputs.cluster_name }}"
+          export SA_NAMES="${{ github.event.inputs.sa_names }}"
 
-          echo "Email: $EMAIL"
           echo "Environment Name: $ENVIRONMENT_NAME"
-          echo "Role: $ROLE"
+          echo "Cluster Name: $CLUSTER_NAME"
+          echo "Service Account Names: $SA_NAMES"
 
           mkdir confluent
-          curl -sL --http1.1 https://cnfl.io/cli | sh -s -- -b ./confluent v2.1.0
+          curl -sL --http1.1 https://cnfl.io/cli | sh -s -- -b ./confluent v2.4.0
           export PATH=./confluent:$PATH;
           confluent login
 
-          chmod +x ./create-user-role.sh
-          bash ./create-user-role.sh
+          chmod +x ./create-sa-acls.sh
+          bash ./create-sa-acls.sh
