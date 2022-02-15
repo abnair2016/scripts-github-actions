@@ -19,7 +19,7 @@ on:
       sa_names:
         description: 'Service Account Name(s)'
         required: true
-        default: 'cust-perso-events_platform-read_only;cust-perso-events_platform-read_write;cust-perso-events_platform-admin'
+        default: 'cust-perso-ep-read_write;cust-perso-ep-admin'
 
 jobs:
   build:
