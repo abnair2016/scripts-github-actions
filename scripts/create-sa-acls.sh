@@ -29,7 +29,7 @@ echo "All Service Account Names: $ALL_SA_NAMES"
 ENVIRONMENT_ID=$(ccloud::get_environment_from_name $ENV_NAME)
 ccloud::use_environment $ENVIRONMENT_ID
 CLUSTERS=$(ccloud::get_clusters)
-CLUSTER_ID=""
+
 for cluster_id in $(echo "${CLUSTERS}" | jq -r '.[] | .id'); do
   echo "Cluster: $cluster_id"
   echo "Service Account Names: $ALL_SA_NAMES"
