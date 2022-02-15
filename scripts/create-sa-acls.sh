@@ -38,9 +38,9 @@ while [ "$ALL_SA_NAMES" != "$sa_name" ] ;do
   # extract the substring from start of string up to delimiter.
   sa_name=${ALL_SA_NAMES%%;*}
   # delete this first "element" AND next separator, from $IN.
-  REMAINING_SA_NAME="${ALL_SA_NAMES#$sa_name;}"
+  ALL_SA_NAMES="${ALL_SA_NAMES#$sa_name;}"
   echo "SA_NAME: $sa_name"
-  echo "REMAINING_SA_NAME: $REMAINING_SA_NAME"
+  echo "ALL_SA_NAMES: $ALL_SA_NAMES"
 done
 
 #while [ "$EMAIL_ADDRESS" != "$email_addr" ] ;do
