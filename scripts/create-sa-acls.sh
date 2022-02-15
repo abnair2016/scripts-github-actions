@@ -21,9 +21,27 @@ ccloud::validate_logged_in_ccloud_cli || exit 1
 #  echo "$EMAIL_ADDRESS"
 #fi
 
-echo "Environment Name: $ENVIRONMENT_NAME"
-echo "Cluster Name: $CLUSTER_NAME"
-echo "Service Account Names: $SA_NAMES"
+ENV_NAME=$(echo "$ENVIRONMENT_NAME" | awk '{print tolower($0)}')
+echo "Environment Name: $ENV_NAME"
+ALL_SA_NAMES=$(echo "$SA_NAMES" | awk '{print tolower($0)}')
+echo "All Service Account Names: $ALL_SA_NAMES"
+
+ENVIRONMENT_ID=$(ccloud::get_environment_from_name $ENV_NAME)
+ccloud::use_environment $ENVIRONMENT_ID
+CLUSTERS=$(ccloud::get_clusters)
+for cluster_id in $(echo "${CLUSTERS}" | jq -r '.[] | .id'); do
+  echo "Cluster: $cluster_id"
+done
+
+echo "Service Account Names: $ALL_SA_NAMES"
+while [ "$ALL_SA_NAMES" != "$sa_name" ] ;do
+  # extract the substring from start of string up to delimiter.
+  sa_name=${ALL_SA_NAMES%%;*}
+  # delete this first "element" AND next separator, from $IN.
+  REMAINING_SA_NAME="${ALL_SA_NAMES#$sa_name;}"
+  echo "SA_NAME: $sa_name"
+  echo "REMAINING_SA_NAME: $REMAINING_SA_NAME"
+done
 
 #while [ "$EMAIL_ADDRESS" != "$email_addr" ] ;do
 #  # extract the substring from start of string up to delimiter.

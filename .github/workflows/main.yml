@@ -13,17 +13,9 @@ on:
         description: Environment Name
         required: true
         options:
-          - dev
-          - test
-          - prod
-      cluster_name:
-        type: choice
-        description: Cluster Name
-        required: true
-        options:
-          - dev-cluster
-          - test-cluster
-          - prod-cluster
+          - development
+          - performance
+          - production
       sa_names:
         description: 'Service Account Name(s)'
         required: true
@@ -45,15 +37,13 @@ jobs:
           export CONFLUENT_CLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
 
           export ENVIRONMENT_NAME="${{ github.event.inputs.environment_name }}"
-          export CLUSTER_NAME="${{ github.event.inputs.cluster_name }}"
           export SA_NAMES="${{ github.event.inputs.sa_names }}"
 
           echo "Environment Name: $ENVIRONMENT_NAME"
-          echo "Cluster Name: $CLUSTER_NAME"
           echo "Service Account Names: $SA_NAMES"
 
           mkdir confluent
-          curl -sL --http1.1 https://cnfl.io/cli | sh -s -- -b ./confluent v2.4.0
+          curl -sL --http1.1 https://cnfl.io/cli | sh -s -- -b ./confluent v2.5.1
           export PATH=./confluent:$PATH;
           confluent login
 
