@@ -1,0 +1,61 @@
+name: Run create user role script on manually triggered workflow
+on:
+#  push:
+#    branches:
+#      - acls
+#    paths-ignore:
+#      - '**.md'
+#      - '.github/*'
+  workflow_dispatch:
+    inputs:
+      environment_name:
+        type: choice
+        description: Environment Name
+        required: true
+        options:
+          - digital-development-33790
+          - digital-performance-33790
+          - digital-production-01-33790
+      cluster_name:
+        type: choice
+        description: Cluster Name
+        required: true
+        options:
+          - sandpit-cluster-0
+          - cluster_perf_01
+          - DIGITAL-NEU-MULTIZONE-CLUSTER-02
+      sa_names:
+        description: 'Service Account Name(s)'
+        required: true
+        default: 'cust-perso-events_platform-read_only;cust-perso-events_platform-read_write;cust-perso-events_platform-admin'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: scripts
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run script file
+        run: |
+          export CCLOUD_MIN_VERSION=2.0.0
+          export CONFLUENT_CLOUD_EMAIL=${{ secrets.CCLOUD_EMAIL }}
+          export CONFLUENT_CLOUD_PASSWORD=${{ secrets.CCLOUD_PASSWORD }}
+
+          export ENVIRONMENT_NAME="${{ github.event.inputs.environment_name }}"
+          export CLUSTER_NAME="${{ github.event.inputs.cluster_name }}"
+          export SA_NAMES="${{ github.event.inputs.sa_names }}"
+
+          echo "Environment Name: $ENVIRONMENT_NAME"
+          echo "Cluster Name: $CLUSTER_NAME"
+          echo "Service Account Names: $SA_NAMES"
+
+          mkdir confluent
+          curl -sL --http1.1 https://cnfl.io/cli | sh -s -- -b ./confluent v2.4.0
+          export PATH=./confluent:$PATH;
+          confluent login
+
+          chmod +x ./create-sa-acls.sh
+          bash ./create-sa-acls.sh
