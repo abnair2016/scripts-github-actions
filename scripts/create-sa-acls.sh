@@ -27,7 +27,8 @@ ALL_SA_NAMES=$(echo "$SA_NAMES" | awk '{print tolower($0)}')
 echo "All Service Account Names: $ALL_SA_NAMES"
 
 ENVIRONMENT_ID=$(ccloud::get_environment_from_name $ENV_NAME)
-ccloud::use_environment $ENVIRONMENT_ID
+echo "ENVIRONMENT_ID: $ENVIRONMENT_ID"
+#ccloud::use_environment $ENVIRONMENT_ID
 CLUSTERS=$(ccloud::get_clusters)
 
 for cluster_id in $(echo "${CLUSTERS}" | jq -r '.[] | .id'); do
@@ -49,21 +50,21 @@ for cluster_id in $(echo "${CLUSTERS}" | jq -r '.[] | .id'); do
     echo "Service Account: $SA_RESOURCE_ID"
 
     if [[ $sa_name == *-read_only ]]; then
-      confluent kafka acl create --allow --service-account $SA_RESOURCE_ID --operation READ --consumer-group '*' --environment ENVIRONMENT_ID --cluster $cluster_id
-      confluent kafka acl create --allow --service-account $SA_RESOURCE_ID --operation DESCRIBE --consumer-group '*' --environment ENVIRONMENT_ID --cluster $cluster_id
-      confluent kafka acl create --allow --service-account $SA_RESOURCE_ID --operation READ --topic $prefixed_name --prefix --environment ENVIRONMENT_ID --cluster $cluster_id
-      confluent kafka acl create --allow --service-account $SA_RESOURCE_ID --operation DESCRIBE --topic $prefixed_name --prefix --environment ENVIRONMENT_ID --cluster $cluster_id
+      confluent kafka acl create --allow --service-account $SA_RESOURCE_ID --operation READ --consumer-group '*' --environment $ENVIRONMENT_ID --cluster $cluster_id
+      confluent kafka acl create --allow --service-account $SA_RESOURCE_ID --operation DESCRIBE --consumer-group '*' --environment $ENVIRONMENT_ID --cluster $cluster_id
+      confluent kafka acl create --allow --service-account $SA_RESOURCE_ID --operation READ --topic $prefixed_name --prefix --environment $ENVIRONMENT_ID --cluster $cluster_id
+      confluent kafka acl create --allow --service-account $SA_RESOURCE_ID --operation DESCRIBE --topic $prefixed_name --prefix --environment $ENVIRONMENT_ID --cluster $cluster_id
     elif [[ $sa_name == *-read_write ]]; then
-      confluent kafka acl create --allow --service-account $SA_RESOURCE_ID --operation READ --consumer-group '*' --environment ENVIRONMENT_ID --cluster $cluster_id
-      confluent kafka acl create --allow --service-account $SA_RESOURCE_ID --operation DESCRIBE --consumer-group '*' --environment ENVIRONMENT_ID --cluster $cluster_id
-      confluent kafka acl create --allow --service-account $SA_RESOURCE_ID --operation READ --topic $prefixed_name --prefix --environment ENVIRONMENT_ID --cluster $cluster_id
-      confluent kafka acl create --allow --service-account $SA_RESOURCE_ID --operation DESCRIBE --topic $prefixed_name --prefix --environment ENVIRONMENT_ID --cluster $cluster_id
-      confluent kafka acl create --allow --service-account $SA_RESOURCE_ID --operation WRITE --topic $prefixed_name --prefix --environment ENVIRONMENT_ID --cluster $cluster_id
+      confluent kafka acl create --allow --service-account $SA_RESOURCE_ID --operation READ --consumer-group '*' --environment $ENVIRONMENT_ID --cluster $cluster_id
+      confluent kafka acl create --allow --service-account $SA_RESOURCE_ID --operation DESCRIBE --consumer-group '*' --environment $ENVIRONMENT_ID --cluster $cluster_id
+      confluent kafka acl create --allow --service-account $SA_RESOURCE_ID --operation READ --topic $prefixed_name --prefix --environment $ENVIRONMENT_ID --cluster $cluster_id
+      confluent kafka acl create --allow --service-account $SA_RESOURCE_ID --operation DESCRIBE --topic $prefixed_name --prefix --environment $ENVIRONMENT_ID --cluster $cluster_id
+      confluent kafka acl create --allow --service-account $SA_RESOURCE_ID --operation WRITE --topic $prefixed_name --prefix --environment $ENVIRONMENT_ID --cluster $cluster_id
     else
       echo "No further ACLS need to be defined"
     fi
 
-    ACL_LIST=$( confluent kafka acl list --service-account $SA_RESOURCE_ID --environment ENVIRONMENT_ID --cluster $cluster_id )
+    ACL_LIST=$( confluent kafka acl list --service-account $SA_RESOURCE_ID --environment $ENVIRONMENT_ID --cluster $cluster_id )
 
     echo $ACL_LIST
 
