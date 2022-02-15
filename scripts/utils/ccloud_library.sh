@@ -1009,7 +1009,7 @@ function ccloud::get_service_account_resource_by_name() {
   serviceAccount=$(confluent iam service-account list -o json | jq -c -r '.[] | select(.name == "'"$sa_name"'")')
 
   if [[ "$serviceAccount" == "" ]]; then
-    echo "ERROR: Could not service account name $sa_name to a service account resource. Verify the service account name and try again."
+    echo "ERROR: Could not reference a service account name $sa_name to a service account resource. Verify the service account name and try again."
     exit 1
   fi
   if ! [[ "$serviceAccount" =~ ^[a-zA-Z]+-[a-zA-Z0-9]+$ ]]; then
