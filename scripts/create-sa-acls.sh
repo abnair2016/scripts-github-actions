@@ -41,6 +41,11 @@ while [ "$ALL_SA_NAMES" != "$sa_name" ] ;do
   ALL_SA_NAMES="${ALL_SA_NAMES#$sa_name;}"
   echo "SA_NAME: $sa_name"
   echo "ALL_SA_NAMES: $ALL_SA_NAMES"
+
+  # Gets service account resource using service account name
+  SA_RESOURCE_ID=$(ccloud::get_service_account_resource_by_name $sa_name)
+  echo "User: $SA_RESOURCE_ID"
+
 done
 
 #while [ "$EMAIL_ADDRESS" != "$email_addr" ] ;do
