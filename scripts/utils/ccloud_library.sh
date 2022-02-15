@@ -1006,7 +1006,7 @@ function ccloud::get_service_account_resource_by_name() {
   [ $# -gt 1 ] && echo "WARN: ccloud::get_service_account_resource_by_name function expects one parameter, received two"
 
   local sa_name="$1"
-  serviceAccount=$(confluent iam service-account list -o json | jq -c -r '.[] | select(.name == "'"$sa_name"'")')
+  serviceAccount=$(confluent iam service-account list -o json | jq -c -r '.[] | select(.name == "'"$sa_name"'") | .id')
 
   if [[ "$serviceAccount" == "" ]]; then
     echo "ERROR: Could not reference a service account name $sa_name to a service account resource. Verify the service account name and try again."
